@@ -4,10 +4,10 @@ import { GetAccessTokenParams } from "../interfaces";
 
 
 export class jsonWebToken {
-    static async getAccessToken({ id, email }: GetAccessTokenParams) {
+    static async getAccessToken({ id, email, type }: GetAccessTokenParams) {
         return {
             accessToken: await promisify<GetAccessTokenParams, Secret, SignOptions>(sign)(
-                { id, email }, `${process.env.JWT_SECRET}`,
+                { id, email, type }, `${process.env.JWT_SECRET}`,
                 { expiresIn: 60 * 60 , algorithm: "HS256" }) // 1 hour access token
         };
     }

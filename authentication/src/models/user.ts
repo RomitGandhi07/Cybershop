@@ -2,6 +2,7 @@ import mongoose  from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { ReferenceValue } from "../interfaces";
 import { referenceValueMongooseSchema } from "../utils/reference-value-mongoose-schema";
+import { UserTypesEnum } from "../enums/user-types.enum";
 
 // An interface that describes the properties to define a new User
 interface UserAttrs {
@@ -9,7 +10,9 @@ interface UserAttrs {
   password: string,
   firstName: string,
   lastName: string,
-  country: ReferenceValue
+  country: ReferenceValue,
+  type: UserTypesEnum,
+  isIndividualServiceProvider?: boolean | null
 }
 
 // An interface that describes the properties that User Document has
@@ -19,7 +22,9 @@ interface UserDoc extends mongoose.Document {
   password: string,
   firstName: string,
   lastName: string,
-  country: ReferenceValue
+  country: ReferenceValue,
+  type: UserTypesEnum,
+  isIndividualServiceProvider: boolean | null
   createdAt: string,
   updatedAt: string,
   version: number
@@ -52,6 +57,14 @@ const userSchema = new mongoose.Schema(
         country: {
             type: referenceValueMongooseSchema("Country"),
             required: true
+        },
+        type: {
+            type: String,
+            required: true
+        },
+        isIndividualServiceProvider: {
+            type: Boolean,
+            default: null
         },
         createdAt: {
             type: Date,
