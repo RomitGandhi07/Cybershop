@@ -1,0 +1,28 @@
+import express, { Request, Response, NextFunction } from "express"
+import { User } from "../../../models/user";
+import bcrypt from "bcrypt";
+
+const router = express.Router()
+
+router.post("/users/me", async (req: Request, res: Response, next: NextFunction) => {
+    // const userDetails = req.currentUser;
+    // // Check whther the user already exists or not
+    // const user = await User.findOne({ email }).lean().exec();
+
+    // if(!user) {
+    //     // Throw new error that user does not exist
+    //     return res.json({error: "Credentials mismatch"});
+    // }
+
+    // // Check whether user's passwords are matching or not, if not then throw an error
+    // const isPasswordMatching = await bcrypt.compare(password, user.password);
+    // if(!isPasswordMatching) {
+    //     return res.json({error: "Credentials mismatch"});
+    // }
+
+    // // TODO: Implement JWT mechanism for generating access token and refres token
+    // return res.json({
+    //     status: 200,
+    //     message: "Login successful",
+    // });
+})

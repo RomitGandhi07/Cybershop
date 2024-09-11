@@ -38,3 +38,11 @@ next-env.d.ts
 package-lock.json
 
 node_modules/
+
+.env
+
+build/
+
+error.log
+http.log
+info.log
