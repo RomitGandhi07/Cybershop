@@ -4,6 +4,12 @@ import { UserRegisterValidation } from "../validations/users/register.validation
 import { validateRequest } from "../middlewares/validate-request.middleware";
 import { UserLoginValidation } from "../validations/users/login.validation";
 import { loginUser } from "../controllers/users/login.controller";
+import { verifyEmail } from "../controllers/users/verify-email.controller";
+import { forgotPasswordRequest } from "../controllers/users/forgot-password-request.controller";
+import { ForgotPasswordRequestValidation } from "../validations/users/forgot-password-request.validation";
+import { resetForgottenPassword } from "../controllers/users/reset-forgotten-password.controller";
+import { ResetForgotPasswordRequestValidation } from "../validations/users/reset-forgotten-password.validation";
+import { logoutUser } from "../controllers/users/logout-user.controller";
 
 const router = express.Router();
 
@@ -19,7 +25,28 @@ router.route("/login").post(
     loginUser
 );
 
-// router.route("/login").post(userLoginValidator(), validate, loginUser);
-// router.route("/refresh-token").post(refreshAccessToken);
+// router.route("/refreshToken").post(refreshAccessToken);
+
+router.route("/verifyEmail/:verificationToken").get(verifyEmail);
+
+router
+    .route("/forgotPassword")
+    .post(
+        ForgotPasswordRequestValidation(),
+        validateRequest,
+        forgotPasswordRequest
+    );
+router
+    .route("/resetPassword")
+    .put(
+        ResetForgotPasswordRequestValidation(),
+        validateRequest,
+        resetForgottenPassword
+    );
+
+
+// Secured Routes
+router.route("/logout").post(logoutUser);
+
 
 export default router;

@@ -11,6 +11,7 @@ export const ipV46Regex =
 /* eslint-disable-next-line */
 const urlRegex = /^$|^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[\w$-_.+!*'(),#%\{\}|\\^~\[\]`<>#%"]+(\.[\w$-_.+!*'(),#%\{\}|\\^~\[\]`<>#%"]+)+((\/)[\w$-_.+!*'(),#%\{\}|\\^~\[\]`<>#%"]+)*(\/[\w$-_.+!*'(),#%\{\}|\\^~\[\]`<>#%"]+\?[\w$-_.+!*'(),#%\{\}|\\^~\[\]`<>#%"]+=[^&=]+(&[\w$-_.+!*'(),#%\{\}|\\^~\[\]`<>#%"]+=[^&=]+)*)?$/im;
 
+export const USER_TEMPORARY_TOKEN_EXPIRY = 20 * 60 * 1000; // 20 minutes
 
 export const DEFAULT_LIMIT = 100;
 export const DEFAULT_PAGE = 1;

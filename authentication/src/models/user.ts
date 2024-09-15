@@ -1,4 +1,4 @@
-import mongoose  from "mongoose";
+import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { ReferenceValue } from "../interfaces";
 import { referenceValueMongooseSchema } from "../utils/reference-value-mongoose-schema";
@@ -6,33 +6,41 @@ import { UserTypesEnum } from "../enums/user-types.enum";
 
 // An interface that describes the properties to define a new User
 interface UserAttrs {
-  email: string,
-  password: string,
-  firstName: string,
-  lastName: string,
-  country: ReferenceValue,
-  type: UserTypesEnum,
-  isIndividualServiceProvider?: boolean | null
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    country: ReferenceValue,
+    type: UserTypesEnum,
+    isIndividualServiceProvider?: boolean | null,
+    emailVerificationToken: string,
+    emailVerificationExpiry: number,
 }
 
 // An interface that describes the properties that User Document has
 interface UserDoc extends mongoose.Document {
-  id: string,
-  email: string,
-  password: string,
-  firstName: string,
-  lastName: string,
-  country: ReferenceValue,
-  type: UserTypesEnum,
-  isIndividualServiceProvider: boolean | null
-  createdAt: string,
-  updatedAt: string,
-  version: number
+    id: string,
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    country: ReferenceValue,
+    type: UserTypesEnum,
+    isIndividualServiceProvider: boolean | null,
+    isEmailVerified: boolean,
+    forgotPasswordToken: string | null,
+    forgotPasswordExpiry: number | null,
+    emailVerificationToken: string | null,
+    emailVerificationExpiry: number | null,
+    refreshToken: string | null,
+    createdAt: string,
+    updatedAt: string,
+    version: number
 }
 
 // An interface that describes the properties that a User model has
 interface UserModel extends mongoose.Model<UserDoc> {
-  build(attrs: UserAttrs): UserDoc,
+    build(attrs: UserAttrs): UserDoc,
 }
 
 const userSchema = new mongoose.Schema(
@@ -64,6 +72,30 @@ const userSchema = new mongoose.Schema(
         },
         isIndividualServiceProvider: {
             type: Boolean,
+            default: null
+        },
+        isEmailVerified: {
+            type: Boolean,
+            default: false,
+        },
+        forgotPasswordToken: {
+            type: String,
+            default: null
+        },
+        forgotPasswordExpiry: {
+            type: Date,
+            default: null
+        },
+        emailVerificationToken: {
+            type: String,
+            default: null,
+        },
+        emailVerificationExpiry: {
+            type: Date,
+            default: null,
+        },
+        refreshToken: {
+            type: String,
             default: null
         },
         createdAt: {
