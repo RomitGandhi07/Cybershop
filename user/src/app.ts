@@ -1,6 +1,7 @@
 import express, { json, urlencoded } from "express";
 import { errorHandler } from "./middlewares/error.middlewares";
-import UserRouter from "./routes/user.routes";
+import UserRouter from "./routes/authentication.routes"
+import UserProfileRouter from "./routes/user-profile.routes";
 import { ICurrentUser } from "./interfaces";
 
 declare global {
@@ -32,7 +33,8 @@ app.use(urlencoded({
     limit: "60mb"
 }));
 
-app.use("/api/v1/authentication/users", UserRouter);
+app.use("/api/v1/authentication", UserRouter);
+app.use("/api/v1/users", UserProfileRouter);
 
 app.use(errorHandler);
 

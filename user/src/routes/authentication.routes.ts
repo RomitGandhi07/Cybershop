@@ -1,17 +1,17 @@
 import express from "express";
-import { registerUser } from "../controllers/users/register.controller";
+import { registerUser } from "../controllers/authentication/register.controller";
 import { UserRegisterValidation } from "../validations/users/register.validation";
 import { validateRequest } from "../middlewares/validate-request.middleware";
 import { UserLoginValidation } from "../validations/users/login.validation";
-import { loginUser } from "../controllers/users/login.controller";
-import { verifyEmail } from "../controllers/users/verify-email.controller";
-import { forgotPasswordRequest } from "../controllers/users/forgot-password-request.controller";
+import { loginUser } from "../controllers/authentication/login.controller";
+import { verifyEmail } from "../controllers/authentication/verify-email.controller";
+import { forgotPasswordRequest } from "../controllers/authentication/forgot-password-request.controller";
 import { ForgotPasswordRequestValidation } from "../validations/users/forgot-password-request.validation";
-import { resetForgottenPassword } from "../controllers/users/reset-forgotten-password.controller";
+import { resetForgottenPassword } from "../controllers/authentication/reset-forgotten-password.controller";
 import { ResetForgotPasswordRequestValidation } from "../validations/users/reset-forgotten-password.validation";
-import { logoutUser } from "../controllers/users/logout-user.controller";
-import { getUserProfile } from "../controllers/users/get-user-profile.controller";
-import { updateUserProfile } from "../controllers/users/update-user-profile.controller";
+import { logoutUser } from "../controllers/authentication/logout-user.controller";
+import { getUserProfile } from "../controllers/user-profile/get-user-profile.controller";
+import { updateUserProfile } from "../controllers/user-profile/update-user-profile.controller";
 import { UpdateUserProfileValidation } from "../validations/users/update-user-profile.validation";
 
 const router = express.Router();
@@ -50,16 +50,6 @@ router
 
 // Secured Routes
 router.route("/logout").post(logoutUser);
-
-router.route("/me").get(
-    getUserProfile
-);
-
-router.route("/me").put(
-    UpdateUserProfileValidation(),
-    validateRequest,
-    updateUserProfile
-);
 
 
 export default router;

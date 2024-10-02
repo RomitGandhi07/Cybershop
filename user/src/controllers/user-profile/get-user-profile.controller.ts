@@ -3,13 +3,14 @@ import { asyncHandler } from "../../utils/asyncHandler";
 import { User } from "../../models/user";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { ApiError } from "../../utils/ApiError";
+import { UserTypesEnum } from "../../enums/user-types.enum";
 
 export const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
-    // req.currentUser = {
-    //     id: "66e6d47d026901b3dfbd67d9",
-    //     email: "gandhiromit77@gmail.com",
-    //     type: UserTypesEnum.CLIENT
-    // }
+    req.currentUser = {
+        id: "66e6d47d026901b3dfbd67d9",
+        email: "gandhiromit77@gmail.com",
+        type: UserTypesEnum.CLIENT
+    }
     
     // If current user not found then throw internal server error
     if (!req.currentUser) {
