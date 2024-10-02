@@ -1,12 +1,13 @@
 import express, { json, urlencoded } from "express";
 import { errorHandler } from "./middlewares/error.middlewares";
 import UserRouter from "./routes/user.routes";
+import { ICurrentUser } from "./interfaces";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Express {
         interface Request {
-            currentUser?: any // TODO: Need interface for this
+            currentUser?: ICurrentUser // TODO: Need interface for this
         }
     }
 }

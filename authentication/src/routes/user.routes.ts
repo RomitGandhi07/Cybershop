@@ -10,6 +10,9 @@ import { ForgotPasswordRequestValidation } from "../validations/users/forgot-pas
 import { resetForgottenPassword } from "../controllers/users/reset-forgotten-password.controller";
 import { ResetForgotPasswordRequestValidation } from "../validations/users/reset-forgotten-password.validation";
 import { logoutUser } from "../controllers/users/logout-user.controller";
+import { getUserProfile } from "../controllers/users/get-user-profile.controller";
+import { updateUserProfile } from "../controllers/users/update-user-profile.controller";
+import { UpdateUserProfileValidation } from "../validations/users/update-user-profile.validation";
 
 const router = express.Router();
 
@@ -47,6 +50,16 @@ router
 
 // Secured Routes
 router.route("/logout").post(logoutUser);
+
+router.route("/me").get(
+    getUserProfile
+);
+
+router.route("/me").put(
+    UpdateUserProfileValidation(),
+    validateRequest,
+    updateUserProfile
+);
 
 
 export default router;
