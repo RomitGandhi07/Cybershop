@@ -39,8 +39,8 @@ const main = async () => {
 }
 
 main().then(() => {
-    app.listen("3001", () => {
-        console.info("Server is running on the port 3001");
+    app.listen("3002", () => {
+        console.info("Server is running on the port 3002");
     });
 }).catch(err => {
     console.error(err);
