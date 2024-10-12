@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { pickFromObject, SALT_ROUNDS } from "../../utils";
+import { getUserName, pickFromObject, SALT_ROUNDS } from "../../utils";
 import { User } from "../../models/user";
 import { ApiError } from "../../utils/ApiError";
 import { Country } from "../../models/country";
@@ -80,7 +80,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     await new MailService().sendEmailVerificationEmail(user.email, `${req.protocol}://${req.get(
         "host"
       )}/api/v1/authentication/users/verifyEmail/${unHashedToken}`,
-    `${user.firstName} ${user.lastName}`);
+    `${getUserName(user)}`);
 
     // TODO: Need publisher of emitting event of user creation
 

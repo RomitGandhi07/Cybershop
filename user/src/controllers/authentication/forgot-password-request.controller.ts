@@ -5,6 +5,7 @@ import { ApiError } from "../../utils/ApiError";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { TokenService } from "../../services/tokens";
 import { MailService } from "../../services/mail";
+import { getUserName } from "../../utils";
 
 export const forgotPasswordRequest = asyncHandler(async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -31,7 +32,7 @@ export const forgotPasswordRequest = asyncHandler(async (req: Request, res: Resp
   // ! NOTE: Following link should be the link of the frontend page responsible to request password reset
   // ! Frontend will send the below token with the new password in the request body to the backend reset password endpoints
   await new MailService().sendForgotPasswordEmail(user.email, `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`, // TODO: Set FORGOT_PASSWORD_REDIRECT_URL
-    `${user.firstName} ${user.lastName}`
+    `${getUserName(user)}`
   );
 
   return res

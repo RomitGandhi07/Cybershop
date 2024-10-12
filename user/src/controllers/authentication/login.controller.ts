@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import { TokenService } from "../../services/tokens";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { MailService } from "../../services/mail";
+import { getUserName } from "../../utils";
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     // Fetch the required fields
@@ -90,7 +91,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
         await new MailService().sendEmailVerificationEmail(user.email, `${req.protocol}://${req.get(
             "host"
         )}/api/v1/authentication/users/verifyEmail/${unHashedToken}`,
-        `${user.firstName} ${user.lastName}`);
+        `${getUserName(user)}`);
 
         throw new ApiError(401, "Please verify your email address to login into the application, verification email has been sent on your email");
     }
