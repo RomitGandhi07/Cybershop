@@ -21,5 +21,9 @@ router.route("/members").get(
     getOrganizationMembers
 );
 
+router.route("/members").get(
+    getOrganizationMembers
+);
+
 
 export default router;

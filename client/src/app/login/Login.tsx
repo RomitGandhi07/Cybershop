@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LoginForm from "./form";
 
 export default function Login(props: any) {
     return (
@@ -20,8 +20,10 @@ export default function Login(props: any) {
                     Log in to Cybershop
                 </h1>
 
+                <LoginForm />
+
                 {/* <!-- Username/Email Input --> */}
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <label className="sr-only">Username or Email</label>
                     <div className="relative">
                         <input
@@ -32,10 +34,10 @@ export default function Login(props: any) {
                         />
                         <i className="fas fa-user absolute left-3 top-3 text-gray-400"></i>
                     </div>
-                </div>
+                </div> */}
 
                 {/* <!-- Password Input --> */}
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <label className="sr-only">Password</label>
                     <div className="relative">
                         <input
@@ -46,12 +48,12 @@ export default function Login(props: any) {
                         />
                         <i className="fas fa-user absolute left-3 top-3 text-gray-400"></i>
                     </div>
-                </div>
+                </div> */}
 
                 {/* <!-- Continue Button --> */}
-                <button className="w-full bg-orange-600 text-white rounded-3xl p-3 text-sm font-medium hover:bg-orange-700 transition duration-200 my-4">
+                {/* <button className="w-full bg-orange-600 text-white rounded-3xl p-3 text-sm font-medium hover:bg-orange-700 transition duration-200 my-4">
                     Continue
-                </button>
+                </button> */}
 
                 {/* <!-- Or Separator --> */}
                 <div className="flex items-center justify-center my-6">

@@ -1,0 +1,14 @@
+.react-select-container {
+  background: #000 !important;
+}
+
+.isSelected {
+  position: relative;
+}
+
+.checkArrow {
+  position: absolute;
+  z-index: 999999;
+  right: 10px;
+  top: 10px;
+}
