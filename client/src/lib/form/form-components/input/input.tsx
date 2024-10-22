@@ -1,53 +1,51 @@
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { InputGroup } from '@blueprintjs/core';
 
-
-export const InputEle = (elementProps: any) => {
-  return (
-      <input
-        {...elementProps}
-      />
-  );
-};
-
-export default function Input({ name, onChange, ...props }: any) {
+export default function Input({ name, onChange, ...props }: any, ref: any) {
   const {
     register,
     control,
     formState: { errors },
   }: any = useFormContext(); // retrieve all hook methods
+
+  const defaultClasses = "form-control";
+
   const elementProps = {
     name: name,
     ...props,
-    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
-    className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
+    className: props.className && !props.mergeClasses ? props.className : `${defaultClasses} ${props.className ?? ""}`,
   };
 
-  // @ts-ignore
-  // @ts-ignore
+  delete elementProps.mergeClasses;
+
   return (
     <>
 
       <Controller
         control={control}
         {...register(name)}
-        {...props}
+        ref={null}
+        // {...props}
         render={({ field: { onChange: onChangeValue, value } }) => (
-            <InputEle
+            <input
               {...elementProps}
               value={value}
               onChange={(event: any) => {
-                // onChangeValue(event);
-                if (elementProps?.onChange) {
-                  elementProps.onChange(event);
-                }
+                const newValue = event.target.value;
+
+                // Update react-hook-form's internal value
+                onChangeValue(newValue);
+
+                // Invoke original onChange method
+                if (onChange) {
+                  onChange({ [name]: newValue });
+                }  
               }}
             />
         )}
       />
       {errors?.[name]?.message ? (
-        <span className="error-msg m-t-8">{errors?.[name]?.message}</span>
+        <span className="text-xs text-red-800 pt-0">{errors?.[name]?.message}</span>
       ) : null}
     </>
   );

@@ -1,6 +1,15 @@
+import { useEffect } from "react";
 import LoginForm from "./form";
+import { Notification } from "@/lib/notification/notification";
+import { NotificationTypesEnum } from "@/enums/notification-types.enum";
 
 export default function Login(props: any) {
+    useEffect(() => {
+        Notification({
+            type: NotificationTypesEnum.SUCCESS,
+            message: "Success Testing"
+        })
+    }, []);
     return (
         <div className="flex justify-center items-center min-h-screen">
             <div className="w-[400px] p-8 border border-gray-300 rounded-lg shadow-lg">

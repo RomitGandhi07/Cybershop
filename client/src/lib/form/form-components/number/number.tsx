@@ -1,17 +1,6 @@
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { NumericInput } from '@blueprintjs/core';
 
-
-
-export const NumberInputEle = (elementProps: any) => {
-  return (
-    <NumericInput
-      buttonPosition={'none'}
-      {...elementProps}
-    />
-  );
-};
 
 export default function Input({ name, onChange, ...props }: any) {
   const {
@@ -19,37 +8,44 @@ export default function Input({ name, onChange, ...props }: any) {
     control,
     formState: { errors },
   }: any = useFormContext(); // retrieve all hook methods
+
+  const defaultClasses = "form-control";
+
   const elementProps = {
     name: name,
     ...props,
-    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
-    className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
+    className: props.className && !props.mergeClasses ? props.className : `${defaultClasses} ${props.className ?? ""}`,
   };
 
-  // @ts-ignore
-  // @ts-ignore
+  delete elementProps.mergeClasses;
+
   return (
     <>
-
       <Controller
         control={control}
         {...register(name)}
-        {...props}
-        render={({ field: { onChange : onChnageValue, value } }) => (
-          <NumberInputEle
+        // {...props}
+        ref={null}
+        render={({ field: { onChange: onChangeValue, value } }) => (
+          <input
             {...elementProps}
             value={value}
-            onValueChange={(event: any) => {
-              onChnageValue(event);
-              if (elementProps?.onChange) {
-                elementProps.onChange(event);
-              }
+            onChange={(event: any) => {
+              const newValue = event.target.value;
+
+              // Update react-hook-form's internal value
+              onChangeValue(newValue);
+
+              // Invoke original onChange method
+              if (onChange) {
+                onChange({ [name]: newValue });
+              }  
             }}
           />
-        )}
+      )}
       />
       {errors?.[name]?.message ? (
-        <span className="error-msg m-t-8">{errors?.[name]?.message}</span>
+        <span className="text-xs text-red-800 pt-0">{errors?.[name]?.message}</span>
       ) : null}
     </>
   );

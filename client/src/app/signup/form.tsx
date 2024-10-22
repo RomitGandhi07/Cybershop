@@ -2,7 +2,7 @@ import Form, { FormItems } from '@/lib/form/form'
 import React, { useRef } from 'react'
 import * as Yup from 'yup';
 
-function LoginForm() {
+function SignupForm() {
     const formRef = useRef(null);
 
     const onSubmitData = (data: any) => {
@@ -64,4 +64,4 @@ function LoginForm() {
     )
 }
 
-export default LoginForm
+export default SignupForm

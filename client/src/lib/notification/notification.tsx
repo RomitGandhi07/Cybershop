@@ -7,7 +7,6 @@ import SuccessIcon from '@/shared/icons/success-icon';
 import WarningIcon from '@/shared/icons/warning-icon';
 import ErrorIcon from '@/shared/icons/error-icon';
 import InfoIcon from '@/shared/icons/info-icon';
-import NotificationCloseIcon from '@/shared/icons/notification-close-icon';
 import { IToastCodeProps } from '@/interfaces';
 
 
@@ -56,7 +55,7 @@ function NotificationWrapper() {
         <ToastContainer
             role="alert"
             transition={Slide}
-            closeButton={<button className={'Toastify__close-button'}><NotificationCloseIcon/></button>}
+            // closeButton={<button className={'Toastify__close-button'}><NotificationCloseIcon/></button>}
         />
   );
 }

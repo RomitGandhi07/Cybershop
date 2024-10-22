@@ -70,19 +70,18 @@ function ItemBlock({
 export function FormItems({ fields }) {
   console.log('fields', fields);
   return (
-    <div className={'formMain'}>
+    <>
       {fields.map((items) => (
-        <div className={'formbox '} key={`formelement_${items.name}_left`}>
-          <div className={'ordformlist'}>
+        // Used when we need class for container means label value
+        <div className={items.containerClass ?? ""} key={`formelement_${items.name}_left`}>
             <ItemBlock
               key={`formelement_${items.name}_left`}
               blocktype="left"
               {...items}
             />
-          </div>
         </div>
       ))}
-    </div>
+    </>
   );
 }
 

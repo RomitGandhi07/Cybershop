@@ -1,15 +1,6 @@
 // @ts-nocheck
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { TextArea } from '@blueprintjs/core';
-
-export const TextAreaEle = (elementProps: any) => {
-  return (
-    <TextArea
-      {...elementProps}
-    />
-  );
-};
 
 export default function Textarea({ name, onChange, ...props }: any) {
   const {
@@ -20,7 +11,6 @@ export default function Textarea({ name, onChange, ...props }: any) {
   const elementProps = {
     name: name,
     ...props,
-    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
     className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
   };
 
@@ -32,22 +22,27 @@ export default function Textarea({ name, onChange, ...props }: any) {
       <Controller
         control={control}
         {...register(name)}
-        {...props}
-        render={({ field: { onChange, onBlur, value, ref } }) => (
-          <TextAreaEle
+        // {...props}
+        render={({ field: { onChange: onChangeValue, value } }) => (
+          <textarea
             {...elementProps}
             value={value}
             onChange={(event: any) => {
-              onChange(event);
-              if (elementProps?.onChange) {
-                elementProps.onChange(event);
-              }
+              const newValue = event.target.value;
+
+              // Update react-hook-form's internal value
+              onChangeValue(newValue);
+
+              // Invoke original onChange method
+              if (onChange) {
+                onChange({ [name]: newValue });
+              }  
             }}
           />
-        )}
+      )}
       />
       {errors?.[name]?.message ? (
-        <span className="error-msg m-t-8">{errors?.[name]?.message}</span>
+        <span className="text-xs text-red-800 pt-0">{errors?.[name]?.message}</span>
       ) : null}
     </>
   );

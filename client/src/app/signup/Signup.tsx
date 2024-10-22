@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaBriefcase, FaLaptopCode } from 'react-icons/fa';
+import SignupForm from "./form";
 
 export default function Signup() {
     const [selectedRole, setSelectedRole] = useState("client");
@@ -92,6 +93,8 @@ export default function Signup() {
                         ? "Join as a Client"
                         : "Join as a Freelancer"}
                 </button>
+
+                <SignupForm></SignupForm>
 
                 {/* Login Link */}
                 <div className="mt-4">
