@@ -3,33 +3,43 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // An interface that describes the properties that are required to invited users
 interface InvitedUsersAttr {
-  id: string,
-  userId: string,
-  emailIds: string[]
+    userId: string,
+    email: string
 }
 
 // An interface that describes the properties that a invited users Document has
 interface InvitedUsersDoc extends mongoose.Document {
-  name: string,
-  userId: string,
-  emailIds: string[]
+    id: string,
+    userId: string,
+    email: string,
+    createdAt: string,
+    updatedAt: string
 }
 
 // An interface that describes the properties that a invited users Model has
 interface InvitedUsersModel extends mongoose.Model<InvitedUsersDoc> {
-  build(attrs: InvitedUsersAttr): InvitedUsersDoc
+    build(attrs: InvitedUsersAttr): InvitedUsersDoc
 }
 
 const invitedUsersSchema = new mongoose.Schema(
     {
         userId: {
             type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
             required: true
         },
-        name: {
-            type: [String],
+        email: {
+            type: String,
             required: true
         },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        },
+        updatedAt: {
+            type: Date,
+            default: Date.now
+        }
     },
     {
         toJSON: {

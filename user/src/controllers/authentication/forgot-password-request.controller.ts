@@ -31,8 +31,14 @@ export const forgotPasswordRequest = asyncHandler(async (req: Request, res: Resp
   // Sending verification email
   // ! NOTE: Following link should be the link of the frontend page responsible to request password reset
   // ! Frontend will send the below token with the new password in the request body to the backend reset password endpoints
-  await new MailService().sendForgotPasswordEmail(user.email, `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`, // TODO: Set FORGOT_PASSWORD_REDIRECT_URL
-    `${getUserName(user)}`
+  await new MailService().sendForgotPasswordEmail({
+    email: user.email,
+    host: `${req.protocol}://${req.get(
+      "host"
+  )}`,
+    token: unHashedToken,
+    userName: `${getUserName(user)}`
+  }
   );
 
   return res

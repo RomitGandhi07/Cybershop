@@ -4,5 +4,6 @@ export interface GetAccessTokenParams {
   id: string,
   email: string,
   type: UserTypesEnum,
-  isIndividualServiceProvider: boolean | null
+  name: string,
+  isEnabled: boolean
 }

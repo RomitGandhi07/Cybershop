@@ -10,9 +10,9 @@ import { ForgotPasswordRequestValidation } from "../validations/authentication/f
 import { resetForgottenPassword } from "../controllers/authentication/reset-forgotten-password.controller";
 import { ResetForgotPasswordRequestValidation } from "../validations/authentication/reset-forgotten-password.validation";
 import { logoutUser } from "../controllers/authentication/logout-user.controller";
-import { getUserProfile } from "../controllers/user-profile/get-user-profile.controller";
-import { updateUserProfile } from "../controllers/user-profile/update-user-profile.controller";
-import { UpdateUserProfileValidation } from "../validations/user-profile/update-user-profile.validation";
+import { forgotPasswordTokenValidate } from "../controllers/authentication/forgot-password-token-validate.controller";
+import { ForgotPasswordTokenValidation } from "../validations/authentication/forgot-password-token-validate.validation";
+import { authenticateUser } from "../middlewares/authenticate-user.middleware";
 
 const router = express.Router();
 
@@ -33,14 +33,23 @@ router.route("/login").post(
 router.route("/verifyEmail/:verificationToken").get(verifyEmail);
 
 router
-    .route("/forgotPassword")
+    .route("/forgotPassword/request")
     .post(
         ForgotPasswordRequestValidation(),
         validateRequest,
         forgotPasswordRequest
     );
+
+    router
+    .route("/forgotPassword/validate")
+    .post(
+        ForgotPasswordTokenValidation,
+        validateRequest,
+        forgotPasswordTokenValidate
+    );
+
 router
-    .route("/resetPassword")
+    .route("/forgotPassword")
     .put(
         ResetForgotPasswordRequestValidation(),
         validateRequest,
@@ -49,7 +58,10 @@ router
 
 
 // Secured Routes
-router.route("/logout").post(logoutUser);
+router.route("/logout").post(
+    authenticateUser,
+    logoutUser
+);
 
 
 export default router;

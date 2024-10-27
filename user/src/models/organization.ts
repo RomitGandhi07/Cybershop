@@ -3,7 +3,6 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // An interface that describes the properties that are required to Organization
 interface OrganizationAttr {
-    id: string,
     owner: string,
     name?: string | null,
     website?: string | null,
@@ -17,6 +16,7 @@ interface OrganizationAttr {
 
 // An interface that describes the properties that a Organization Document has
 interface OrganizationDoc extends mongoose.Document {
+    id: string,
     owner: string,
     name: string | null,
     website: string | null,
@@ -68,7 +68,7 @@ const organizationSchema = new mongoose.Schema(
             default: null
         },
         team: {
-            type: [mongoose.Schema.Types.ObjectId],
+            type: [String],
             default: null
         },
     },

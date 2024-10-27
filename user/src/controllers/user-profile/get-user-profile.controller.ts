@@ -8,7 +8,8 @@ export const getUserProfile = asyncHandler(async (req: Request, res: Response) =
     // req.currentUser = {
     //     id: "66e6d47d026901b3dfbd67d9",
     //     email: "gandhiromit77@gmail.com",
-    //     type: UserTypesEnum.CLIENT
+    //     type: UserTypesEnum.CLIENT,
+    //     name: "Romit Gandhi"
     // }
     
     // If current user not found then throw internal server error

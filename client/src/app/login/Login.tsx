@@ -1,15 +1,20 @@
 import { useEffect } from "react";
-import LoginForm from "./form";
-import { Notification } from "@/lib/notification/notification";
-import { NotificationTypesEnum } from "@/enums/notification-types.enum";
+import LoginForm from "./login-form";
+import http from "@/lib/http/http";
 
 export default function Login(props: any) {
-    useEffect(() => {
-        Notification({
-            type: NotificationTypesEnum.SUCCESS,
-            message: "Success Testing"
-        })
-    }, []);
+    async function loginUser() {
+        await http.post({
+            url: "/api/v1/authentication/login",
+            data: {
+                "email": "gandhiromit77@gmail.com",
+                "password": "password"
+            }
+        });
+    }
+    // useEffect(() => {
+    //     loginUser();
+    // }, []);
     return (
         <div className="flex justify-center items-center min-h-screen">
             <div className="w-[400px] p-8 border border-gray-300 rounded-lg shadow-lg">

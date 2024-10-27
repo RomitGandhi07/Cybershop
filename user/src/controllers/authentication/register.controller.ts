@@ -6,33 +6,14 @@ import { ApiError } from "../../utils/ApiError";
 import { Country } from "../../models/country";
 import bcrypt from "bcrypt";
 import { ApiResponse } from "../../utils/ApiResponse";
-import { UserTypesEnum } from "../../enums/user-types.enum";
 import { TokenService } from "../../services/tokens";
 import { MailService } from "../../services/mail";
+import { Organization } from "../../models/organization";
 
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
     // Fetch the required fields
     const userDetails = pickFromObject(req.body,
-        ["email", "password", "firstName", "lastName", "type", "isIndividualServiceProvider", "country"]);
-
-    // If the type is service provider then isIndividualServiceProvider must be provided otherwise it should be ignored
-    if (userDetails.type === UserTypesEnum.SERVICE_PROVIDER) {
-        if (req.body.hasOwnProperty("isIndividualServiceProvider")) {
-            throw new ApiError(
-                422,
-                "One or more required parameters are missing.",
-                [{
-                    parameters: [{
-                        attributes: ["isIndividualServiceProvider"],
-                        message: "These paramters are missing."
-                    }]
-                }] as Array<never>
-            );
-        }
-    }
-    else {
-        userDetails.isIndividualServiceProvider = null;
-    }
+        ["email", "password", "firstName", "lastName", "type", "country"]);
 
     // Check whther the user already exists or not
     const isUserAlreadyExists = await User.countDocuments({ email: userDetails.email });
@@ -77,11 +58,23 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     }).save();
 
     // Sending email
-    await new MailService().sendEmailVerificationEmail(user.email, `${req.protocol}://${req.get(
-        "host"
-      )}/api/v1/authentication/users/verifyEmail/${unHashedToken}`,
-    `${getUserName(user)}`);
+    await new MailService().sendEmailVerificationEmail({
+        email: user.email,
+        host: `${req.protocol}://${req.get(
+            "host"
+        )}`,
+        token: unHashedToken,
+        userName: `${getUserName(user)}`
+    });
 
+    // If user is not part of any other organization then need to create an organization with blank data
+    const organization = await Organization.findOne({ team: user.email }).lean().exec();
+
+    if (!organization) {
+        await Organization.build({
+            owner: String(user._id)
+        }).save();
+    }
     // TODO: Need publisher of emitting event of user creation
 
     return res

@@ -2,17 +2,10 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { ApiError } from "../../utils/ApiError";
-import { UserTypesEnum } from "../../enums/user-types.enum";
 import { Organization } from "../../models/organization";
 import { intersectTwoObjects, pickFromObject } from "../../utils";
 
 export const updateOrganizationDetails = asyncHandler(async (req: Request, res: Response) => {
-    req.currentUser = {
-        id: "66e6d47d026901b3dfbd67d9",
-        email: "gandhiromit77@gmail.com",
-        type: UserTypesEnum.CLIENT
-    }
-    
     // If current user not found then throw internal server error
     if (!req.currentUser) {
         throw new ApiError(500, "Something went wrong");
@@ -22,7 +15,7 @@ export const updateOrganizationDetails = asyncHandler(async (req: Request, res: 
     const organization = await Organization.findOne({
         $or: [
             { owner: req.currentUser.id },
-            { team: req.currentUser.id }
+            { team: req.currentUser.email }
         ]
     });
     if (!organization) {

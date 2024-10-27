@@ -1,12 +1,23 @@
 import Form, { FormItems } from '@/lib/form/form'
 import React, { useRef } from 'react'
 import * as Yup from 'yup';
+import { useRouter } from 'next/navigation';
+import { APIStore } from '@/utils/api-store';
 
 function LoginForm() {
+    const { push } = useRouter();
+
     const formRef = useRef(null);
 
-    const onSubmitData = (data: any) => {
-        console.info("data", data)
+    const onSubmitData = async (data: Record<any, any>) => {
+        try {
+            // Login user and redirects to home page
+            await APIStore.loginUser(data);
+            push("/");   
+        }
+        catch(err) {
+            //
+        }
     }
 
     const onSubmit = () => {
@@ -46,10 +57,10 @@ function LoginForm() {
                     .string()
                     .required('Password is required')
                     .min(8, 'Password must be at least 8 characters long')
-                    .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-                    .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-                    .matches(/[0-9]/, 'Password must contain at least one number')
-                    .matches(/[!@#\$%\^&\*]/, 'Password must contain at least one special character'),
+                    // .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+                    // .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+                    // .matches(/[0-9]/, 'Password must contain at least one number')
+                    // .matches(/[!@#\$%\^&\*]/, 'Password must contain at least one special character'),
                 })} ref={formRef}>
                 <FormItems fields={fields}></FormItems>
             </Form>

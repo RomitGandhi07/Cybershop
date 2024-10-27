@@ -4,6 +4,8 @@ import { getOrganizationMembers } from "../controllers/organization/get-organiza
 import { updateOrganizationDetails } from "../controllers/organization/update-organization-details.controller";
 import { UpdateOrganizationDetailsValidation } from "../validations/organization/update-organization-details.validation";
 import { validateRequest } from "../middlewares/validate-request.middleware";
+import { inviteOrganizationMember } from "../controllers/organization/invite-organization-member.controller";
+import { InviteOrganizationMemberValidation } from "../validations/organization/invite-organization-member.validation";
 
 const router = express.Router();
 
@@ -21,8 +23,10 @@ router.route("/members").get(
     getOrganizationMembers
 );
 
-router.route("/members").get(
-    getOrganizationMembers
+router.route("/members").put(
+    InviteOrganizationMemberValidation,
+    validateRequest,
+    inviteOrganizationMember
 );
 
 

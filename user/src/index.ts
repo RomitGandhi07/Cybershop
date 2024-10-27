@@ -28,6 +28,9 @@ const handleValidationError = () => {
     if (!process.env.JWT_SECRET) {
         throw new Error("JWT_SECRET must be defined");
     }
+    if (!process.env.COOKIE_SECRET) {
+        throw new Error("COOKIE_SECRET must be defined");
+    }
     if (!process.env.MAIL_USER || !process.env.MAIL_PASSWORD) {
         throw new Error("Mail user and password must be defined");
     }

@@ -5,7 +5,7 @@ import { Secret, SignOptions, sign } from "jsonwebtoken";
 import { GetAccessTokenParams } from "../interfaces";
 
 export class TokenService {
-    static generateTemporaryToken () {
+    static generateTemporaryToken (expiryTime = USER_TEMPORARY_TOKEN_EXPIRY) {
         // This token should be client facing
         // for example: for email verification unHashedToken should go into the user's mail
         const unHashedToken = crypto.randomBytes(20).toString("hex");
@@ -16,16 +16,16 @@ export class TokenService {
           .update(unHashedToken)
           .digest("hex");
 
-        // This is the expiry time for the token (20 minutes)
-        const tokenExpiry = Date.now() + USER_TEMPORARY_TOKEN_EXPIRY;
+        // This is the expiry time for the token (20 minutes - default) or provided time
+        const tokenExpiry = Date.now() + expiryTime;
       
         return { unHashedToken, hashedToken, tokenExpiry };
       }
 
-      static async getAccessToken({ id, email, type, isIndividualServiceProvider }: GetAccessTokenParams) {
+      static async getAccessToken({ id, email, type, name, isEnabled }: GetAccessTokenParams) {
         return {
             accessToken: await promisify<GetAccessTokenParams, Secret, SignOptions>(sign)(
-                { id, email, type, isIndividualServiceProvider }, `${process.env.JWT_SECRET}`,
+                { id, email, type, name, isEnabled }, `${process.env.JWT_SECRET}`,
                 { expiresIn: 60 * 60 , algorithm: "HS256" }) // 1 hour access token
         };
     }

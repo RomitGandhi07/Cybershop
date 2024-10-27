@@ -12,7 +12,6 @@ interface UserAttrs {
     lastName: string,
     country: ReferenceValue,
     type: UserTypesEnum,
-    isIndividualServiceProvider?: boolean | null,
     emailVerificationToken: string,
     emailVerificationExpiry: number,
 }
@@ -26,7 +25,6 @@ interface UserDoc extends mongoose.Document {
     lastName: string,
     country: ReferenceValue,
     type: UserTypesEnum,
-    isIndividualServiceProvider: boolean | null,
     isEmailVerified: boolean,
     forgotPasswordToken: string | null,
     forgotPasswordExpiry: number | null,
@@ -70,10 +68,6 @@ const userSchema = new mongoose.Schema(
         type: {
             type: String,
             required: true
-        },
-        isIndividualServiceProvider: {
-            type: Boolean,
-            default: null
         },
         isEmailVerified: {
             type: Boolean,

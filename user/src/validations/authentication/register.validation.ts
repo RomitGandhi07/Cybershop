@@ -51,9 +51,9 @@ export const UserRegisterValidation = () => {
 
     booleanValidator([
         {
-            name: "isIndividualServiceProvider",
-            nullable: true,
-            message: "Is Individual Service Provider must be a boolean"
+            name: "isIndividual",
+            mandatory: true,
+            message: "Is Individual must be a boolean"
         }
     ], validations);
 

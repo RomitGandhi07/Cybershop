@@ -7,6 +7,7 @@ import { TokenService } from "../../services/tokens";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { MailService } from "../../services/mail";
 import { getUserName } from "../../utils";
+import app from "../../app";
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     // Fetch the required fields
@@ -27,18 +28,14 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
     // If the user is already verified then generate access and refresh token. Save it in the cookie and send response
     if (user.isEmailVerified) {
-        // TODO: Add more options to make cookie more secure and reliable
-        const options = {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-        };
 
         // Generate access token and refresh token
         const { accessToken } = await TokenService.getAccessToken({
             id: String(user._id),
             email: user.email,
             type: user.type,
-            isIndividualServiceProvider: user.isIndividualServiceProvider
+            name: getUserName(user),
+            isEnabled: user.isEnabled
         });
 
         const { refreshToken } = await TokenService.getRefreshToken({
@@ -49,8 +46,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
         await user.save();
 
         // Set access token and refresh token
-        res.cookie("Token1", accessToken, options);
-        res.cookie("Token2", refreshToken, options);
+        res.cookie("Token1", accessToken, app.locals.cookieOptions);
+        res.cookie("Token2", refreshToken, app.locals.cookieOptions);
 
         // Send response
         return res
@@ -88,10 +85,14 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
         await user.save();
 
         // Sending email
-        await new MailService().sendEmailVerificationEmail(user.email, `${req.protocol}://${req.get(
-            "host"
-        )}/api/v1/authentication/users/verifyEmail/${unHashedToken}`,
-        `${getUserName(user)}`);
+        await new MailService().sendEmailVerificationEmail({
+            email: user.email,
+            host: `${req.protocol}://${req.get(
+                "host"
+            )}`,
+            token: unHashedToken,
+            userName: `${getUserName(user)}`
+        });
 
         throw new ApiError(401, "Please verify your email address to login into the application, verification email has been sent on your email");
     }
