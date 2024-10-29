@@ -3,6 +3,7 @@ import { errorHandler } from "./middlewares/error.middlewares";
 import UserRouter from "./routes/authentication.routes"
 import UserProfileRouter from "./routes/user-profile.routes";
 import OrganizationRouter from "./routes/organization.routes";
+import FlexibleFieldsRouter from "./routes/flexible-fields.routes";
 import { ICurrentUser } from "./interfaces";
 import cors from "cors";
 import { authenticateUser } from "./middlewares/authenticate-user.middleware";
@@ -48,6 +49,7 @@ app.use(urlencoded({
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use("/api/v1/authentication", UserRouter);
+app.use("/api/v1/users/fields", authenticateUser, FlexibleFieldsRouter);
 app.use("/api/v1/users", authenticateUser, UserProfileRouter);
 app.use("/api/v1/users/organizations", authenticateUser, OrganizationRouter);
 

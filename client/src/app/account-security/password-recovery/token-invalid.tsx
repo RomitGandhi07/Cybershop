@@ -19,7 +19,7 @@ export default function PasswordRecoveryTokenInvalid () {
 
                     {/* <!-- Start Over Button --> */}
                     <button className="w-full bg-orange-600 text-white font-bold py-2 rounded-lg hover:bg-orange-700"
-                        onClick={() => router.push("/login")}>
+                        onClick={() => router.push("/account-security/login")}>
                         Start Over
                     </button>
                 </div>

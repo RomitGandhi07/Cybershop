@@ -8,7 +8,7 @@ export class APIStore {
     };
 
     static loginUser = async (data: Record<any, any>, messageSettings?:NotificationMessageSettings) => {
-        await http.post({
+        return await http.post({
             url: "/api/v1/authentication/login",
             data,
             messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
@@ -29,6 +29,14 @@ export class APIStore {
     static signUpUser = async (data: Record<any, any>, messageSettings?:NotificationMessageSettings) => {
         return await http.post({
             url: "/api/v1/authentication/signup",
+            data,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        });
+    }
+
+    static forgotPasswordRequest = async (data: Record<any, any>, messageSettings?:NotificationMessageSettings) => {
+        return await http.post({
+            url: "/api/v1/authentication/forgotPassword/request",
             data,
             messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
         });

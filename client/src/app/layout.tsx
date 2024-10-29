@@ -23,6 +23,11 @@ export default function RootLayout({
         <ReduxProvider>
           <NotificationWrapper />
           {/* <CheckLogin/> */}
+
+
+          {/* Runtime classes are not generated so, need to specify here */}
+          <span className="text-xs text-red-800 pt-0 hidden">
+          </span>
           {children}
         </ReduxProvider>
       </body>

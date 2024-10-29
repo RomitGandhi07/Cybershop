@@ -2,36 +2,42 @@ import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { ApiError } from "../../utils/ApiError";
-// import { UserTypesEnum } from "../../enums/user-types.enum";
-import { Organization } from "../../models/organization";
+import { InvitedUsers } from "../../models/invited-users";
+import { User } from "../../models/user";
+import { base64Decode, getUserName } from "../../utils";
 
 export const getInvitationDetails = asyncHandler(async (req: Request, res: Response) => {
-    
-    // If current user not found then throw internal server error
-    if (!req.currentUser) {
-        throw new ApiError(500, "Something went wrong");
+    const { token }: { token: string } = req.body
+
+    // Base 64 decode of that token to fetch user's email address
+    const email = base64Decode(token);
+
+    // Check if user is already there, if yes then send status false
+    const user = await User.findOne({ email: email }).lean().exec();
+    if (user) {
+        return res
+            .status(200)
+            .json({ status: false });
     }
 
-    // Find the organization, if the organization not found then throw an error
-    const organization = await Organization.findOne({
-        $or: [
-            { owner: req.currentUser.id },
-            { team: req.currentUser.id }
-        ]
-    }, {
-        owner: 0,
-        team: 0
-    }).lean().exec();
-    if (!organization) {
-        throw new ApiError(404, "Organization not found");
+    // Find the invited user, if entry not found then send status false
+    const invitedUserEntry = await InvitedUsers.findOne({ email }).lean().exec();
+    if (!invitedUserEntry) {
+        return res
+        .status(200)
+        .json({ status: false });    }
+
+    // Fetch name of user who invited this user
+    const invitedUser = await User.findById(invitedUserEntry.userId).lean().exec();
+    if(!invitedUser) {
+        throw new ApiError(500, "Something went wrong");
     }
 
     // Send response
     return res
-      .status(200)
-      .json(new ApiResponse(200, {
-        ...organization,
-        id: String(organization._id),
-        _id: undefined
-      }));
+        .status(200)
+        .json(new ApiResponse(200, {
+            status: true,
+            name: getUserName(invitedUser)
+        }));
 });

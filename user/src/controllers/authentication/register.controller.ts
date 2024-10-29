@@ -75,7 +75,6 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
             owner: String(user._id)
         }).save();
     }
-    // TODO: Need publisher of emitting event of user creation
 
     return res
         .status(201)
