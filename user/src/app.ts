@@ -33,7 +33,7 @@ app.use(
     cors({
         // origin: "*",
         credentials: true,
-        preflightContinue: true
+        // preflightContinue: true
     }),
 );
 
@@ -49,8 +49,8 @@ app.use(urlencoded({
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use("/api/v1/authentication", UserRouter);
-app.use("/api/v1/users/fields", authenticateUser, FlexibleFieldsRouter);
-app.use("/api/v1/users", authenticateUser, UserProfileRouter);
+app.use("/api/v1/users/fields", FlexibleFieldsRouter);
+app.use("/api/v1/users", UserProfileRouter);
 app.use("/api/v1/users/organizations", authenticateUser, OrganizationRouter);
 
 app.use(errorHandler);

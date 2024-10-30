@@ -18,7 +18,7 @@ interface OrganizationAttr {
 interface OrganizationDoc extends mongoose.Document {
     id: string,
     owner: string,
-    name: string | null,
+    name: string,
     website: string | null,
     industry: string | null,
     noOfEmployees: number | null,
@@ -41,7 +41,7 @@ const organizationSchema = new mongoose.Schema(
         },
         name: {
             type: String,
-            default: null
+            required: true
         },
         website: {
             type: String,

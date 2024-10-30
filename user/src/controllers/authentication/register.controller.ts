@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler";
-import { getUserName, pickFromObject, SALT_ROUNDS } from "../../utils";
+import { base64Decode, getUserName, pickFromObject, SALT_ROUNDS } from "../../utils";
 import { User } from "../../models/user";
 import { ApiError } from "../../utils/ApiError";
 import { Country } from "../../models/country";
@@ -9,11 +9,12 @@ import { ApiResponse } from "../../utils/ApiResponse";
 import { TokenService } from "../../services/tokens";
 import { MailService } from "../../services/mail";
 import { Organization } from "../../models/organization";
+import { InvitedUsers } from "../../models/invited-users";
 
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
     // Fetch the required fields
     const userDetails = pickFromObject(req.body,
-        ["email", "password", "firstName", "lastName", "type", "country"]);
+        ["email", "password", "firstName", "lastName", "type", "country", "invitationToken"]);
 
     // Check whther the user already exists or not
     const isUserAlreadyExists = await User.countDocuments({ email: userDetails.email });
@@ -31,6 +32,24 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     userDetails.country = {
         id: String(country._id),
         value: country.name
+    }
+
+    // If invitation token is passed
+    let isUserInvitationValid = false;
+    if (userDetails.invitationToken) {
+        // Get email form token
+        const email = base64Decode(userDetails.invitationToken);
+
+        // If we get email then check whether this user invited or not, if not then throw an error otherwise set isUserInvitationValid to true
+        if(email) {
+            const invitedUserEntry = await InvitedUsers.findOne({ email }).lean().exec();
+            if (!invitedUserEntry) {
+                throw new ApiError(404, "Invitation not found.");
+            }
+
+            isUserInvitationValid = true;
+        }
+        
     }
 
     // Hash the password
@@ -58,23 +77,26 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     }).save();
 
     // Sending email
+    const userName = `${getUserName(user)}`;
+
     await new MailService().sendEmailVerificationEmail({
         email: user.email,
         host: `${req.protocol}://${req.get(
             "host"
         )}`,
         token: unHashedToken,
-        userName: `${getUserName(user)}`
+        userName
     });
 
-    // If user is not part of any other organization then need to create an organization with blank data
-    const organization = await Organization.findOne({ team: user.email }).lean().exec();
-
-    if (!organization) {
+    // If the user invitation is not valid means he/she is not part of any organization. So, create blank organization for them
+    if(!isUserInvitationValid) {
         await Organization.build({
-            owner: String(user._id)
+            owner: String(user._id),
+            name: userName
         }).save();
     }
+
+   
 
     return res
         .status(201)

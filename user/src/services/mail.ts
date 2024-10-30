@@ -50,7 +50,7 @@ export class MailService {
             from: process.env.MAIL_USER,
             to: email,
             subject: "You're Invited to Join Cybershop!",
-            html: inviteMemberTemplate(userName, `${host}/${FrontendRoutes.INVITE_MEMBER}/${base64Encode(email)}`)
+            html: inviteMemberTemplate(userName, `${host}/${FrontendRoutes.INVITE_MEMBER}?invitation=${base64Encode(email)}`)
         })
     }
 

@@ -13,6 +13,7 @@ import { logoutUser } from "../controllers/authentication/logout-user.controller
 import { forgotPasswordTokenValidate } from "../controllers/authentication/forgot-password-token-validate.controller";
 import { ForgotPasswordTokenValidation } from "../validations/authentication/forgot-password-token-validate.validation";
 import { authenticateUser } from "../middlewares/authenticate-user.middleware";
+import { getInvitationDetails } from "../controllers/authentication/get-invitation-details.controller";
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ router
         forgotPasswordRequest
     );
 
-    router
+router
     .route("/forgotPassword/validate")
     .post(
         ForgotPasswordTokenValidation,
@@ -55,6 +56,11 @@ router
         validateRequest,
         resetForgottenPassword
     );
+
+
+router.route("/invitation").get(
+    getInvitationDetails
+);
 
 
 // Secured Routes

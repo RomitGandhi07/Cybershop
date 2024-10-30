@@ -5,7 +5,40 @@ import { useRouter } from 'next/navigation';
 import { APIStore } from '@/utils/api-store';
 import { PrimaryButton } from '@/shared/components/button';
 
-function LoginForm() {
+// Fields used in the form
+const fields = [
+    {
+        name: 'email',
+        className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
+        mergeClasses: true,
+        placeholder: "Enter your email address",
+        type: 'input',
+        label: 'Email'
+    },
+    {
+        name: 'password',
+        className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
+        containerClass: "mt-4",
+        placeholder: "Enter your password",
+        type: 'password',
+        label: 'Password',
+        mergeClasses: true
+    }
+];
+
+// Form fields validation
+const formValidations = Yup.object().shape({
+    email: Yup
+        .string()
+        .email('Please enter a valid email')
+        .required('Email is required'),
+    password: Yup
+        .string()
+        .required('Password is required')
+        .min(8, 'Password must be at least 8 characters long')
+});
+
+export default function LoginForm() {
     const router = useRouter();
     const [isApiLoader, setApiLoader] = useState(false);
 
@@ -39,38 +72,6 @@ function LoginForm() {
         }
     }, []);
 
-    // Fields used in the form
-    const fields = [
-        {
-            name: 'email',
-            className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
-            mergeClasses: true,
-            placeholder: "Enter your email address",
-            type: 'input',
-            label: 'Email'
-        },
-        {
-            name: 'password',
-            className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
-            containerClass: "mt-4",
-            placeholder: "Enter your password",
-            type: 'password',
-            label: 'Password',
-            mergeClasses: true
-        }
-    ];
-
-    // Form fields validation
-    const formValidations = Yup.object().shape({
-        email: Yup
-            .string()
-            .email('Please enter a valid email')
-            .required('Email is required'),
-        password: Yup
-            .string()
-            .required('Password is required')
-            .min(8, 'Password must be at least 8 characters long')
-    });
 
     return (
         <>
@@ -97,5 +98,3 @@ function LoginForm() {
         </>
     )
 }
-
-export default LoginForm

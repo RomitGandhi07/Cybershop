@@ -1,19 +1,64 @@
 "use client";
 import Form, { FormItems } from '@/lib/form/form'
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import * as Yup from 'yup';
 import { SignUpContext } from './Signup';
 import { UserTypesEnum } from '@/enums/user-types.enum';
 import { useRouter } from 'next/navigation';
+import { APIStore } from '@/utils/api-store';
+import { ApiSuccessResponse } from '@/interfaces';
+import { PrimaryButton } from '@/shared/components/button';
 
-function SignupForm() {
+interface ISignupFormProps {
+    invitationToken: string | null,
+    organization: { id: string, name: string } | null
+}
+
+export const SignupForm: React.FC<ISignupFormProps> = ({ invitationToken, organization }) => {
     const formRef = useRef(null);
     const context = useContext(SignUpContext);
     const router = useRouter();
+    const [flexibleFields, setFlexibleFields] = useState<Record<string, {
+        id: string,
+        values: { id: string, value: string }[]
+    }>>({});
+    const [isApiLoader, setApiLoader] = useState(false);
 
-    const onSubmitData = (data: any) => {
-        console.info("data", data)
-        router.push("/account-security/login")
+
+    const fetchCountries = async () => {
+        // Fetch country
+        const response = await APIStore.fetchUserFlexibleFields({
+            keys: ["country"]
+        });
+
+        // If API gives success then
+        if (response.success) {
+            setFlexibleFields((response as ApiSuccessResponse).data);
+        }
+    }
+
+    useEffect(() => {
+        fetchCountries();
+    }, []);
+
+    const onSubmitData = async (data: any) => {
+        setApiLoader(true);
+        // If organization is there means invitation token is valid then add that token in the request body
+        if (organization) {
+            data.invitationToken = invitationToken;
+        }
+
+        data.type = context.role
+
+        delete data.confirmPassword;
+
+
+        const response = await APIStore.signUpUser(data);
+        if (response.success) {
+            router.push("/account-security/login")
+        }
+
+        setApiLoader(false);
     }
 
     const onSubmit = () => {
@@ -64,9 +109,15 @@ function SignupForm() {
         },
         {
             name: 'country',
-            className: "mt-4 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
-            placeholder: "Country",
-            type: 'input', // TODO: Change it to select
+            className: "mt-4 bg-white w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
+            placeholder: "Select Country",
+            options: (flexibleFields?.country?.values ?? []).map(record => {
+                return {
+                    label: record.value,
+                    value: record.id
+                }
+            }),
+            type: 'select'
         }
     ];
 
@@ -99,7 +150,7 @@ function SignupForm() {
             <div className="w-[400px] p-8 border border-gray-300 rounded-lg shadow-lg">
                 {/* <!-- Logo --> */}
                 {/* <div className="flex justify-center mb-8"> */}
-                    {/* <Image
+                {/* <Image
                         src="https://placehold.co/120x30"
                         alt="Upwork Logo"
                         className="h-8"
@@ -112,16 +163,27 @@ function SignupForm() {
                 <h1 className="text-center text-2xl font-medium text-gray-900 mb-3">
                     {context.role === UserTypesEnum.CLIENT ? "Signup to get work done" : "Singup to provide services"}
                 </h1>
+
+                {organization && (
+                    <div className="text-center">
+                        <span className="text-sm text-orange-600 text-center">You are joining <b>{organization.name}</b></span>
+                    </div>
+                )}
                 <Form onSubmit={onSubmitData} defaultValues={{}} validationSchema={formValidations} ref={formRef}>
                     <FormItems fields={fields}></FormItems>
                 </Form>
 
-                <button className="mt-8 w-full bg-orange-600 text-white rounded-3xl p-3 text-sm font-medium hover:bg-orange-700 transition duration-200 my-4"
+                {/* Submit Button */}
+                <PrimaryButton
+                    isLoader={isApiLoader}
+                    className='mt-8'
+                    mergeClasses={true}
                     onClick={() => {
                         onSubmit();
-                    }}>
+                    }}
+                >
                     Continue
-                </button>
+                </PrimaryButton>
 
                 {/* Switch role Link */}
                 <div className="mt-4 text-center">
@@ -171,4 +233,4 @@ function SignupForm() {
     )
 }
 
-export default SignupForm
+export default SignupForm;

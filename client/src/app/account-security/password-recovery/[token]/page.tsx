@@ -23,7 +23,7 @@ export default function PasswordRecoveryToken() {
             });
 
             // Set whether the token is valid or not
-            setIsTokenValid(!response.success);
+            setIsTokenValid(response.success);
 
             // Remove token from the route
             const newUrl = window.location.pathname.replace(`/${token}`, '');

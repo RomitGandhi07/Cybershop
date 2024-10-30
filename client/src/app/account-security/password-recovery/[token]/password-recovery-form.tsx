@@ -10,6 +10,39 @@ interface IPasswordRecoveryFormProps {
     token: string
 }
 
+// Fields of the form
+const fields = [
+    {
+        name: 'password',
+        className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
+        containerClass: "mt-4",
+        placeholder: "Enter your password",
+        type: 'password',
+        label: 'Enter Password',
+        mergeClasses: true
+    },
+    {
+        name: 'confirmPassword',
+        className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
+        containerClass: "mt-4",
+        placeholder: "Re-enter your password",
+        type: 'password',
+        label: 'Re-enter Password',
+        mergeClasses: true
+    }
+];
+
+const formValidations = Yup.object().shape({
+    password: Yup
+        .string()
+        .required('Password is required')
+        .min(8, 'Password must be at least 8 characters long'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), ""], 'Passwords must match')
+        .required('Confirm password is required'),
+
+});
+
 const PasswordRecoveryForm: React.FC<IPasswordRecoveryFormProps> = ({ token }) => {
     const formRef = useRef(null);
 
@@ -22,7 +55,7 @@ const PasswordRecoveryForm: React.FC<IPasswordRecoveryFormProps> = ({ token }) =
         });
 
         if (response.success) {
-            redirect("/login");
+            redirect("/account-security/login");
         }
 
 
@@ -35,47 +68,6 @@ const PasswordRecoveryForm: React.FC<IPasswordRecoveryFormProps> = ({ token }) =
             formRef.current.submit();
         }
     };
-
-    // Fields of the form
-    const fields = [
-        {
-            name: 'password',
-            className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
-            containerClass: "mt-4",
-            placeholder: "Enter your password",
-            type: 'password',
-            label: 'Enter Password',
-            mergeClasses: true
-        },
-        {
-            name: 'confirmPassword',
-            className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
-            containerClass: "mt-4",
-            placeholder: "Re-enter your password",
-            type: 'password',
-            label: 'Re-enter Password',
-            mergeClasses: true
-        }
-    ];
-
-    const formValidations = Yup.object().shape({
-        password: Yup
-            .string()
-            .required('Password is required')
-            .min(8, 'Password must be at least 8 characters long')
-            .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-            .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-            .matches(/[0-9]/, 'Password must contain at least one number')
-            .matches(/[!@#\$%\^&\*]/, 'Password must contain at least one special character'),
-        confirmPassword: Yup
-            .string()
-            .required('Password is required')
-            .min(8, 'Password must be at least 8 characters long')
-            .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-            .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-            .matches(/[0-9]/, 'Password must contain at least one number')
-            .matches(/[!@#\$%\^&\*]/, 'Password must contain at least one special character'),
-    });
 
     return (
         <div className="flex items-center justify-center h-screen">

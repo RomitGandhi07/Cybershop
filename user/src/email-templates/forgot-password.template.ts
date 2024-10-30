@@ -39,7 +39,7 @@ export const forgotPasswordTemplate = (userName: string, url: string) => {
         .reset-btn {
             display: inline-block;
             background-color: #ea580c;
-            color: #ffffff;
+            color: #ffffff !important;
             padding: 10px 20px;
             border-radius: 5px;
             text-decoration: none;

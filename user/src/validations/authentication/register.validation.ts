@@ -28,6 +28,11 @@ export const UserRegisterValidation = () => {
             message: "Password must be string and of max 100 characters long."
         },
         {
+            name: "invitationToken",
+            nullable: true,
+            message: "Invitation Token must be valid string."
+        },
+        {
             name: "type",
             maxLength: 100,
             minLength: 1,
@@ -49,13 +54,6 @@ export const UserRegisterValidation = () => {
         }
     ], validations);
 
-    booleanValidator([
-        {
-            name: "isIndividual",
-            mandatory: true,
-            message: "Is Individual must be a boolean"
-        }
-    ], validations);
 
     mongoIDValidator([
         {

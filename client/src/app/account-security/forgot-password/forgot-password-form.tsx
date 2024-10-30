@@ -8,6 +8,26 @@ interface IForgotPasswordFormProps {
     setRequestSuccessful: (status: boolean) => void
 }
 
+// Fields used in the form
+const fields = [
+    {
+        name: 'email',
+        className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
+        mergeClasses: true,
+        placeholder: "Enter your email address",
+        type: 'input',
+        label: 'Email'
+    }
+];
+
+// Form fields validation
+const formValidations = Yup.object().shape({
+    email: Yup
+        .string()
+        .email('Please enter a valid email')
+        .required('Email is required')
+});
+
 export const ForgotPasswordForm: React.FC<IForgotPasswordFormProps> = ({ setRequestSuccessful }) => {
     const [isAPILoder, setIsAPILoader] = useState(false);
     const formRef = useRef(null);
@@ -41,26 +61,6 @@ export const ForgotPasswordForm: React.FC<IForgotPasswordFormProps> = ({ setRequ
             formRef.current.submit();
         }
     }, []);
-
-    // Fields used in the form
-    const fields = [
-        {
-            name: 'email',
-            className: "mt-2 w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
-            mergeClasses: true,
-            placeholder: "Enter your email address",
-            type: 'input',
-            label: 'Email'
-        }
-    ];
-
-    // Form fields validation
-    const formValidations = Yup.object().shape({
-        email: Yup
-            .string()
-            .email('Please enter a valid email')
-            .required('Email is required')
-    });
 
     return (
         <div className="w-[600px] h-[400px] flex flex-col items-center justify-start">
