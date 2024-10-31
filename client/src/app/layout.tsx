@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import NotificationWrapper from "@/lib/notification/notification";
+import ReduxProvider from "@/store/redux-provider";
+// import CheckLogin from "@/shared/components/check-login";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ReduxProvider>
+          <NotificationWrapper />
+          {/* <CheckLogin/> */}
+
+
+          {/* Runtime classes are not generated so, need to specify here */}
+          <span className="text-xs text-red-800 pt-0 hidden">
+          </span>
+          {children}
+        </ReduxProvider>
+      </body>
     </html>
   );
 }

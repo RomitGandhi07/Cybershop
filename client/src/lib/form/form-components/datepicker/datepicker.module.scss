@@ -1,0 +1,25 @@
+.calendericon {
+  position: absolute;
+  top: 51%;
+  right: 4%;
+}
+.withSegment {
+  .calendericon {
+    top: 34% !important;
+  }
+  .clearicon {
+    top: 26%;
+  }
+}
+.clearicon {
+  position: absolute;
+  top: 48%;
+  right: 12%;
+}
+
+.DatePicker {
+  position: relative;
+  .calendericon {
+    top: 34%;
+  }
+}
