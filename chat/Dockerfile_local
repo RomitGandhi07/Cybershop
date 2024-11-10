@@ -1,0 +1,30 @@
+# Stage 1: Build the application
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Copy source files
+COPY . .
+
+# Build the application (optional if you use a build step, e.g., for Next.js)
+RUN npm run build
+
+# Stage 2: Run the application
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy only the necessary files from the build stage
+COPY --from=builder /app .
+
+# Expose the application port
+EXPOSE 3003
+
+# Run the application
+CMD ["npm", "run", "dev"]

@@ -83,4 +83,32 @@ export class APIStore {
             messageSettings: messageSettings ?? defaultMessageSettings
         });
     }
+
+    // Marketplace
+    static getSevices = async (queryParams: string, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/services${queryParams ? `?${queryParams}` : ""}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static createJobPost = async (data: Record<string, string>, messageSettings?: NotificationMessageSettings) => {
+        return await http.post({
+            url: `/api/v1/marketplace/jobs`,
+            data,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static updateJobPost = async (jobId: string, data: Record<string, any>, messageSettings?: NotificationMessageSettings) => {
+        const defaultMessageSettings = {
+            hideSuccessMessage: true
+        }
+
+        return await http.put({
+            url: `/api/v1/marketplace/jobs/${jobId}`,
+            data,
+            messageSettings: messageSettings ?? defaultMessageSettings
+        })
+    }
 }
