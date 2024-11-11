@@ -3,7 +3,8 @@ interface IButtonProps {
     onClick?: Function,
     className?: string,
     children: React.ReactNode
-    mergeClasses?: boolean
+    mergeClasses?: boolean,
+    disabled?: boolean
 }
 
 export const PrimaryButton: React.FC<IButtonProps> = ({
@@ -11,7 +12,8 @@ export const PrimaryButton: React.FC<IButtonProps> = ({
     onClick = null,
     className = '',
     children,
-    mergeClasses = true
+    mergeClasses = true,
+    disabled = false
 }) => {
 
     const defaultClass = "w-full bg-orange-600 text-white rounded-3xl p-3 text-sm font-medium hover:bg-orange-700 transition duration-200";
@@ -22,7 +24,9 @@ export const PrimaryButton: React.FC<IButtonProps> = ({
                 if (onClick && !isLoader) {
                     onClick()
                 }
-            }}>
+            }}
+            disabled={disabled}
+        >
             <div className="flex items-center gap-5 justify-center">
                 {
                     isLoader ? (

@@ -19,6 +19,7 @@ import SelectList from './form-components/select/select';
 import Switch from './form-components/switch/switch';
 import DatepickerInput from './form-components/datepicker/datepicker';
 import MaskInput from './form-components/mask-input/input-mask';
+import * as Yup from "yup";
 
 function ItemBlock({
   label,
@@ -91,7 +92,7 @@ function Form(props, ref) {
   const submitRef = useRef(null);
   const formOptions = {
     defaultValues,
-    resolver: yupResolver(validationSchema),
+    resolver: validationSchema ? yupResolver(validationSchema) : null
   };
   const methods = useForm({ ...formOptions, mode: 'all' });
 

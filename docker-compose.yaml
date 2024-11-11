@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app_instance_1:
+    image: cybershop/chat
+    network_mode: "host"
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - MONGO_URI=mongodb+srv://romit:admin@cluster0.pmq7ry3.mongodb.net/
+
+  app_instance_2:
+    image: cybershop/chat
+    network_mode: "host"
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - MONGO_URI=mongodb+srv://romit:admin@cluster0.pmq7ry3.mongodb.net/
