@@ -20,8 +20,7 @@ interface IJobBudget {
 // An interface that describes the properties that are required to create a new Job
 interface JobAttr {
     title: string,
-    createdBy: ReferenceValue,
-    updatedBy: ReferenceValue
+    createdBy: ReferenceValue
 }
 
 // An interface that describes the properties that a Job Document has
@@ -40,6 +39,7 @@ interface JobDoc extends mongoose.Document {
     updatedAt: string,
     status: JobStatusEnum,
     published: boolean,
+    publishedAt: string,
     version: string
 }
 
@@ -90,10 +90,6 @@ const jobSchema = new mongoose.Schema(
             type: referenceValueMongooseSchema("User"),
             required: true
         },
-        updatedBy: {
-            type: referenceValueMongooseSchema("User"),
-            required: true
-        },
         createdAt: {
             type: Date,
             default: Date.now
@@ -101,6 +97,10 @@ const jobSchema = new mongoose.Schema(
         updatedAt: {
             type: Date,
             default: Date.now
+        },
+        publishedAt: {
+            type: Date,
+            default: null
         },
     },
     {

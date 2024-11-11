@@ -62,7 +62,6 @@ export const updateJobPost = asyncHandler(async (req: Request, res: Response) =>
     // If anything got updated then save the details in the DB
     if (Object.keys(updatedData).length) {
         Object.assign(job, updatedData);
-        job.updatedBy = loggedInUser;
 
         await job.save();
     }

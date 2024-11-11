@@ -19,8 +19,7 @@ export const creteJobPost = asyncHandler(async (req: Request, res: Response) => 
     // Create job 
     const job = await Job.build({
         title,
-        createdBy: loggedInUser,
-        updatedBy: loggedInUser
+        createdBy: loggedInUser
     }).save();
 
     // Send response
