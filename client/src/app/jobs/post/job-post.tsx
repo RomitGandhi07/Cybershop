@@ -1,10 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import JobTitle from "../steps/title/title";
-import JobServices from "./services";
+import JobServices from "../steps/services/services";
 import JobDescription from "../steps/description/description";
 import Stepper from "./stepper";
 import { JobPostContext } from "../job-post-context";
+import JobDuration from "../steps/duration/services";
+import JobExpertise from "../steps/expertise/expertise";
+import JobComplexity from "../steps/complexity/complexity";
+import JobBudget from "../steps/budget/budget";
 
 
 
@@ -12,7 +16,11 @@ import { JobPostContext } from "../job-post-context";
 const JobPost: React.FC<{}> = () => {
     const steps = [
         { component: <JobTitle />, name: "Title" },
-        // { component: <JobServices />, name: "Services" },
+        { component: <JobServices />, name: "Services" },
+        { component: <JobExpertise />, name: "Expertise" },
+        { component: <JobDuration />, name: "Duration" },
+        { component: <JobComplexity />, name: "Complexity" },
+        { component: <JobBudget />, name: "Budget" },
         { component: <JobDescription />, name: "Description", nextButtonName: "Publish" },
     ];
 
@@ -21,9 +29,9 @@ const JobPost: React.FC<{}> = () => {
 
     return (
         <JobPostContext.Provider value={{ jobId, setJobId, jobDetails, setJobDetails }}>
-            {/* <div className="flex flex-col content-center items-center"> */}
+            <div className="h-full">
                 <Stepper steps={steps} title="Job Post" displayHeaderTitle={true} />
-            {/* </div> */}
+            </div>
         </JobPostContext.Provider>
     );
 }

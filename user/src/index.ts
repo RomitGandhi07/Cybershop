@@ -12,7 +12,7 @@ const connectDatabase = async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await mongoose.connect(process.env.MONGO_URI, {
-        dbName: "authentication"
+        dbName: "user"
     });
     console.info("connect to db successfully");
 };

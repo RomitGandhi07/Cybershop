@@ -8,12 +8,16 @@ export default function Textarea({ name, onChange, ...props }: any) {
     control,
     formState: { errors },
   } = useFormContext(); // retrieve all hook methods
+
+  const defaultClasses = "text-black mt-4 rounded-3xl w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent";
+
   const elementProps = {
     name: name,
     ...props,
-    className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
+    className: props.className && !props.mergeClasses ? props.className : `${defaultClasses} ${props.className ?? ""}`,
   };
 
+  delete elementProps.mergeClasses;
   // @ts-ignore
   // @ts-ignore
   return (

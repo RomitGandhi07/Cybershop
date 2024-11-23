@@ -18,9 +18,10 @@ const JobPostDescriptoinForm: React.FC<IJobPostDescriptionForm> = ({ description
     const fields = [{
         name: 'description',
         className: "text-black mt-4 rounded-3xl w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent",
-        placeholder: "Enter job title",
         type: 'textarea',
         label: "Describe what you need",
+        rows: 10,
+        cols: 40,
         onChange: onChangeSearch
     }]
 

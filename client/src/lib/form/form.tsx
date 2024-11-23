@@ -20,6 +20,7 @@ import Switch from './form-components/switch/switch';
 import DatepickerInput from './form-components/datepicker/datepicker';
 import MaskInput from './form-components/mask-input/input-mask';
 import * as Yup from "yup";
+import RichTextEditor from './form-components/rich-text-editor/rich-text-editor';
 
 function ItemBlock({
   label,
@@ -48,6 +49,7 @@ function ItemBlock({
     // ipAddressInput: IpAddressInput,
     // percentageInput: PercentagInput,
     switchInput: Switch,
+    richTextEditor: RichTextEditor
   };
 
   const TypeComp = typeArr[type];
