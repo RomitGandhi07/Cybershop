@@ -1,5 +1,6 @@
 "use client";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa6";
 
 interface IJobDetails {
     id: string,
@@ -24,7 +25,8 @@ interface IJobDetails {
     expertise: string,
     duration: string,
     proposals: number,
-    publishedAt: string
+    publishedAt: string,
+    wishlisted: boolean,
 }
 interface IJobListingCardProps {
     job: IJobDetails
@@ -36,12 +38,14 @@ const JobListingCard: React.FC<IJobListingCardProps> = ({ job }) => {
         <>
             <div className="bg-white border border-gray-200 rounded-lg p-6 mb-4">
                 <p className="text-gray-500 text-xs mb-2">Posted at {new Date(job.publishedAt).toString()}</p>
-                <div className="flex content-between">
+                <div className="flex justify-between items-center mb-2">
                     <span className="text-orange-600 font-semibold text-lg mb-2">{job.title}</span>
-                    {/* <span>
-                        <FaHeart className="hover:text-gray-600 cursor-pointer"></FaHeart>
-                    </span> */}
-
+                    <FaHeart
+                        size={25}
+                        // onClick={handleWishlistToggle}
+                        className={`cursor-pointer transition-colors ${job.wishlisted ? "text-red-500" : "text-gray-400"
+                            }`}
+                    />
                 </div>
                 <p className="text-gray-500 text-sm mb-4">{job.budget.type} - {job.expertise} - Est. Time: {job.duration} - Est. Budget: {job.budget.fixedFee ? `$${job.budget.fixedFee}` : `$${job.budget.hourlyRate?.from} - $${job.budget.hourlyRate?.to}`}</p>
                 <p className="text-gray-700 text-sm mb-3">{job.description}

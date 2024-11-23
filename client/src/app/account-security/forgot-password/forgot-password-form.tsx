@@ -72,7 +72,7 @@ export const ForgotPasswordForm: React.FC<IForgotPasswordFormProps> = ({ setRequ
             {/* <!-- Card Container --> */}
             <div className="bg-white shadow-md rounded-lg w-[400px] p-8">
                 <h1 className="text-2xl font-semibold text-center mb-4">Password Recovery</h1>
-                <p className="text-gray-600 text-center mb-6">Enter the email address associated with your Cyberhop account.</p>
+                <p className="text-gray-600 text-center mb-6">Enter the email address associated with your Cybershop account.</p>
 
                 <Form onSubmit={forgotPasswordRequest} validationSchema={formValidations} ref={formRef}>
                     <FormItems fields={fields}></FormItems>

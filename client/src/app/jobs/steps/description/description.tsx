@@ -6,36 +6,38 @@ import { APIStore } from "@/utils/api-store";
 import { Notification } from '@/lib/notification/notification';
 import { NotificationTypesEnum } from "@/enums/notification-types.enum";
 
+// eslint-disable-next-line react/display-name
 const JobDescription: React.FC<{}> = forwardRef((_, ref) => {
     const context = useContext(JobPostContext);
 
     const [description, setDescription] = useState<string>(context.jobDetails?.description ?? "");
 
     const onNext = async () => {
-        // If title is not there then return false
-        if (!description) {
-            return false;
-        }
+        // // If title is not there then return false
+        // if (!description) {
+        //     return false;
+        // }
 
-        // We need to call update API
-        if (context.jobId) {
-            const response = await APIStore.updateJobPost(
-                context.jobId,
-                {
-                    description
-                }
-            );
+        // // We need to call update API
+        // if (context.jobId) {
+        //     const response = await APIStore.updateJobPost(
+        //         context.jobId,
+        //         {
+        //             description
+        //         }
+        //     );
 
-            return response.success;
-        }
-        // Display notificatin that something went wrong
-        else {
-            Notification({
-                type: NotificationTypesEnum.ERROR,
-                message: "Something went wrong",
-            });
-            return false;
-        }
+        //     return response.success;
+        // }
+        // // Display notificatin that something went wrong
+        // else {
+        //     Notification({
+        //         type: NotificationTypesEnum.ERROR,
+        //         message: "Something went wrong",
+        //     });
+        //     return false;
+        // }
+        return true;
 
     };
 
@@ -75,24 +77,17 @@ const JobDescription: React.FC<{}> = forwardRef((_, ref) => {
                             description={description}
                             setDescription={setDescription}
                         />
-                        {/* <p className="text-gray-400 text-xs text-right">49,876 characters left</p> */}
-
-                        {/* <!-- Warning Message --> */}
-                        <div className="flex items-start text-yellow-600 text-xs mt-2 mb-6">
-                            <i className="fas fa-exclamation-circle mr-2 mt-1"></i>
-                            <span>Your description looks a little short. Add details like your project milestones and a bit about your team.</span>
-                        </div>
 
                         {/* <!-- Help Section --> */}
-                        <p className="text-gray-800 text-sm font-medium mb-1">Need help?</p>
-                        <a href="#" className="text-green-700 text-sm hover:underline mb-4 inline-block">See examples of effective descriptions</a>
+                        {/* <p className="text-gray-800 text-sm font-medium mb-1">Need help?</p>
+                        <a href="#" className="text-green-700 text-sm hover:underline mb-4 inline-block">See examples of effective descriptions</a> */}
 
-                        {/* <!-- Attach File Button --> */}
-                        <button className="flex items-center space-x-2 text-green-700 bg-white border border-green-700 rounded-full py-2 px-4 hover:bg-green-100 focus:outline-none">
+                         {/* <!-- Attach File Button --> */}
+                        {/* <button className="flex items-center space-x-2 text-green-700 bg-white border border-green-700 rounded-full py-2 px-4 hover:bg-green-100 focus:outline-none">
                             <i className="fas fa-paperclip"></i>
                             <span>Attach file</span>
                         </button>
-                        <p className="text-gray-400 text-xs mt-1">Max file size: 100MB</p>
+                        <p className="text-gray-400 text-xs mt-1">Max file size: 100MB</p> */}
                     </div>
                 </div>
             </div>

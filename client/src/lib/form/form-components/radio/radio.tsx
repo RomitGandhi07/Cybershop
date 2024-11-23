@@ -29,7 +29,7 @@ export const RadioEle = (elementProps: any) => {
     </BRadioGroup>
   );
 };
-export default function Radio({ name, onChange, ...props }) {
+export default function Radio({ name, options, onChange, ...props }) {
   const {
     register,
     control,
@@ -48,18 +48,35 @@ export default function Radio({ name, onChange, ...props }) {
         control={control}
         {...register(name)}
         {...props}
-        render={({ field: { onChange: onChangeValue, value } } : any) => (
+        render={({ field: { onChange: onChangeValue, value } }: any) => (
           <>
-            <RadioEle
-              {...elementProps}
-              value={value}
-              onChange={(event: any) => {
-                onChangeValue(event);
-                if (elementProps?.onChange) {
-                  elementProps.onChange(event);
-                }
-              }}
-            />
+            {(options ?? []).map((option, index) => (
+              <label
+                key={index}
+                className={`flex items-start space-x-3 p-4 cursor-pointer ${value === option.value ? 'text-orange-600' : 'border-gray-300'
+                  } hover:border-orange-500 transition duration-200`}
+              >
+                <input
+                  key={index}
+                  type="radio"
+                  value={option.value}
+                  checked={value === option.value}
+                  onChange={(e) => {
+                    onChangeValue(e.target.value);
+                    // if (onChange) {
+                    //   onChange(e.target.value);
+                    // }
+                  }}
+                  className="h-7 w-7 text-orange-500 border-gray-300 focus:ring-orange-500"
+                />
+                <div>
+                  <span className="font-medium text-gray-900">{option.label}</span>
+                  {option.description && (
+                    <p className="text-sm text-gray-500">{option.description}</p>
+                  )}
+                </div>
+              </label>
+            ))}
           </>
         )}
       />

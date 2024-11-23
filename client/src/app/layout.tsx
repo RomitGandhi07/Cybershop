@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NotificationWrapper from "@/lib/notification/notification";
 import ReduxProvider from "@/store/redux-provider";
+import Navbar from "./navbar";
 // import CheckLogin from "@/shared/components/check-login";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,11 +25,15 @@ export default function RootLayout({
           <NotificationWrapper />
           {/* <CheckLogin/> */}
 
-
-          {/* Runtime classes are not generated so, need to specify here */}
-          <span className="text-xs text-red-800 pt-0 hidden">
+          <span className="text-xs text-red-800 pt-0 bg-opacity-80 hidden">
           </span>
+          {/* <div className="h-[20%]"> */}
+          <Navbar></Navbar>
+          {/* </div> */}
+          {/* <div className="h-[80%]"> */}
           {children}
+          {/* </div> */}
+          {/* Runtime classes are not generated so, need to specify here */}
         </ReduxProvider>
       </body>
     </html>

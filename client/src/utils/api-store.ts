@@ -111,4 +111,23 @@ export class APIStore {
             messageSettings: messageSettings ?? defaultMessageSettings
         })
     }
+
+    static getJobPostDetails = async (jobId: string, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/${jobId}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static wishlistJobPost = async (jobId: string, data: Record<string, any>, messageSettings?: NotificationMessageSettings) => {
+        const defaultMessageSettings = {
+            hideSuccessMessage: true
+        }
+
+        return await http.put({
+            url: `/api/v1/marketplace/jobs/${jobId}/wishlist`,
+            data,
+            messageSettings: messageSettings ?? defaultMessageSettings
+        })
+    }
 }
