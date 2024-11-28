@@ -14,7 +14,7 @@ const JobDetails: React.FC<{}> = () => {
     const [client, setClient] = useState<Record<string, any>>({});
     const [user, setUser] = useState<Record<string, any>>({
         wishlist: false,
-        proposal: false
+        proposal: true
     });
     const [loading, setLoading] = useState(true);
     const { jobId } = useParams();
@@ -22,13 +22,13 @@ const JobDetails: React.FC<{}> = () => {
 
     const fetchJobPostDetails = async (): Promise<void> => {
         setLoading(true);
-        const response = await APIStore.getJobPostDetails(jobId as string, {
+        const response = await APIStore.getJobPostDetailsForServiceProvider(jobId as string, {
             hideSuccessMessage: true
         });
         if (response && response.success) {
             setJob((response as ApiSuccessResponse).data.job);
             setClient((response as ApiSuccessResponse).data.client);
-            setUser((response as ApiSuccessResponse).data.user);
+            // setUser((response as ApiSuccessResponse).data.user);
         }
         setLoading(false);
     };
@@ -55,7 +55,7 @@ const JobDetails: React.FC<{}> = () => {
 
     return (
         loading ? <p>Loading...</p> :
-            <div className="w-full mx-auto bg-white p-8 rounded shadow-md flex">
+            <div className="w-full mx-auto bg-gray p-8 mt-3 flex">
                 {/* <!-- Left Column --> */}
                 <div className="w-full pr-8">
                     {/* <!-- Job Title --> */}
@@ -116,7 +116,7 @@ const JobDetails: React.FC<{}> = () => {
                             <div className="flex items-center">
                                 <FaFileContract className="text-orange-600" size={25} />
                                 <div className="flex flex-col ml-1">
-                                    <span className="text-gray-900 font-semibold ml-2">{job.proposals || 8}</span>
+                                    <span className="text-gray-900 font-semibold ml-2">{job.proposals ?? 0}</span>
                                     <span className="text-gray-600 text-sm ml-2">Proposals</span>
                                 </div>
                             </div>
@@ -156,11 +156,27 @@ const JobDetails: React.FC<{}> = () => {
                 <div className="w-1/3">
                     {/* <!-- Apply and Save buttons --> */}
                     <div className="bg-white shadow-md p-4 rounded-lg border border-gray-300 mb-4">
-                        <PrimaryButton
-                            isLoader={false}
-                        >
-                            Apply Now
-                        </PrimaryButton>
+
+                        {
+                            user.proposal ? (
+                                <PrimaryButton
+                                    isLoader={false}
+                                    className="w-full bg-gray-400 text-white rounded-3xl p-3 text-sm font-medium hover:bg-gray-400 transition duration-200"
+                                >
+                                    <div className="flex">
+                                        <span className="ml-2">Already Applied</span>
+                                    </div>
+                                </PrimaryButton>
+                            ) : (
+                                <PrimaryButton
+                                    isLoader={false}
+                                >
+                                    <div className="flex">
+                                        <span className="ml-2">Apply Now</span>
+                                    </div>
+                                </PrimaryButton>
+                            )
+                        }
                         <BorderButton
                             isLoader={false}
                             className="mt-5"
@@ -206,22 +222,22 @@ const JobDetails: React.FC<{}> = () => {
                         </div>
                         <div className="flex items-center mb-2 mt-4">
                             <FaMapMarkerAlt className="text-gray-400"></FaMapMarkerAlt>
-                            <span className="ml-2">India</span>
+                            <span className="ml-2">{client.location}</span>
                         </div>
 
                         <div className="flex items-center mb-2 mt-4">
                             <FaBriefcase className="text-gray-400"></FaBriefcase>
-                            <span className="ml-2">4 Jobs Posted</span>
+                            <span className="ml-2">{client.totalJobs} Jobs Posted</span>
                         </div>
 
                         <div className="flex items-center mb-2 mt-4">
                             <FaCircleInfo className="text-gray-400"></FaCircleInfo>
-                            <span className="ml-2">2 Open Jobs</span>
+                            <span className="ml-2">{client.openJobs} Open Jobs</span>
                         </div>
 
                         <div className="flex items-center mb-2 mt-4">
                             <FaDollarSign className="text-gray-400"></FaDollarSign>
-                            <span className="ml-2">$35k total spent</span>
+                            <span className="ml-2">${client.totalSpent ?? "0"} total spent</span>
                         </div>
 
                         {/* <p className="text-gray-900 mb-1"><span className="font-semibold">$35K total spent</span></p>
@@ -231,17 +247,17 @@ const JobDetails: React.FC<{}> = () => {
 
                         <div className="flex items-center mb-2 mt-4">
                             <FaIndustry className="text-gray-400"></FaIndustry>
-                            <span className="ml-2">Tech & IT</span>
+                            <span className="ml-2">{client.industry ?? "--"}</span>
                         </div>
 
                         <div className="flex items-center mb-2 mt-4">
                             <FaUser className="text-gray-400"></FaUser>
-                            <span className="ml-2">500 Employees</span>
+                            <span className="ml-2">{client.noOfEmployees || client.noOfEmployees === 0 ? `${client.noOfEmployees} Employees` : "--"}</span>
                         </div>
 
                         <div className="flex items-center mb-2 mt-4">
                             <FaClock className="text-gray-400"></FaClock>
-                            <span className="ml-2">Member since Aug 28, 2024</span>
+                            <span className="ml-2">Member Since {new Date(client.memberSince).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                         </div>
 
                         {/* <!-- Job Link --> */}

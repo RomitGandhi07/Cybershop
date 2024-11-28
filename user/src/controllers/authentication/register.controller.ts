@@ -89,13 +89,31 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     });
 
     // If the user invitation is not valid means he/she is not part of any organization. So, create blank organization for them
+    let organizationId: string | null = null;
+
     if(!isUserInvitationValid) {
-        await Organization.build({
+        const organization = await Organization.build({
             owner: String(user._id),
             name: userName
         }).save();
+
+        organizationId = String(organization._id);
+    }
+    else {
+        const organization = await Organization.findOne({
+            team: user.email
+        });
+        if(organization) {
+            organizationId = String(organization._id);
+        }
     }
 
+    // Save organizationId
+    const addedUser = await User.findById(user._id);
+    if(addedUser) {
+        user.organizationId = organizationId;
+        await user.save();
+    }
    
 
     return res

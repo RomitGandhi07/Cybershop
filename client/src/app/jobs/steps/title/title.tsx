@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { useImperativeHandle, forwardRef, useContext, useState } from "react";
 import { JobPostContext } from "../../job-post-context";
 import JobPostTitleForm from "./job-post-title-form";
@@ -43,7 +44,6 @@ const JobTitle: React.FC<{}> = forwardRef((_, ref) => {
         //     return false;
         // }
         return true;
-
     };
 
     // Expose onNext to the parent using useImperativeHandle
@@ -61,10 +61,10 @@ const JobTitle: React.FC<{}> = forwardRef((_, ref) => {
                     {/* <!-- Left Content --> */}
                     <div className="w-[50%]">
                         <h1 className="text-3xl font-semibold text-gray-900 leading-tight mb-3">
-                            Let's start with a strong title.
+                            Let&apos;s start with a strong title.
                         </h1>
                         <p className="text-gray-600 text-sm mb-8">
-                            This helps your job post stand out to the right candidates. It's the first thing they’ll see, so make it count!
+                            This helps your job post stand out to the right candidates. It&apos;s the first thing they’ll see, so make it count!
                         </p>
                     </div>
 

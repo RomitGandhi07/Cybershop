@@ -19,7 +19,7 @@ const Navbar = () => {
                         <a href="#" className="text-slate-800 hover:text-orange-700 text-sm">Jobs</a>
                         {/* <a href="#" className="text-slate-800 hover:text-orange-700 text-sm">Proposals</a> */}
                         <a href="#" className="text-slate-800 hover:text-orange-700 text-sm">Contracts</a>
-                        <a href="#" className="text-slate-800 hover:text-orange-700 text-sm">Organization</a>
+                        <a href="/organization" className="text-slate-800 hover:text-orange-700 text-sm">Organization</a>
                         <a href="#" className="text-slate-800 hover:text-orange-700 text-sm">Messages</a>
                         <a href="#" className="text-slate-800 hover:text-orange-700 text-sm">Threat Intelligence</a>
                     </nav>

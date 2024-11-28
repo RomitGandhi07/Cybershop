@@ -14,7 +14,7 @@ export default function Login(props: any) {
 
     return (
         <div className="flex justify-center items-center min-h-screen">
-            <div className="w-[400px] p-8 border border-gray-300 rounded-lg shadow-lg">
+            <div className="w-[400px] p-8 border border-gray-300 rounded-lg shadow-lg bg-white">
                 {/* <!-- Logo --> */}
                 <div className="flex justify-center mb-8">
                     {/* <Image

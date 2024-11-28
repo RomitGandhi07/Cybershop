@@ -15,6 +15,7 @@ interface IProposalTerms {
 
 // An interface that describes the properties that are required to create a new Proposal
 interface ProposalAttr {
+    organizationId: string,
     userId: string,
     jobId: string,
     coverLetter: string,
@@ -25,6 +26,7 @@ interface ProposalAttr {
 // An interface that describes the properties that a Proposal Document has
 interface ProposalDoc extends mongoose.Document {
     id: string,
+    organizationId: string,
     userId: string,
     jobId: string,
     status: ProposalStatusEnum,
@@ -43,6 +45,11 @@ interface ProposalModel extends mongoose.Model<ProposalDoc> {
 
 const proposalSchema = new mongoose.Schema(
     {
+        organizationId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Organization",
+            required: true
+        },
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

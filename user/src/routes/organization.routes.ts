@@ -23,7 +23,7 @@ router.route("/members").get(
     getOrganizationMembers
 );
 
-router.route("/members").put(
+router.route("/members/invite").put(
     InviteOrganizationMemberValidation,
     validateRequest,
     inviteOrganizationMember

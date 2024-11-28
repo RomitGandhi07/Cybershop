@@ -5,5 +5,6 @@ export interface ICurrentUser {
     email: string,
     type: UserTypesEnum,
     name: string,
-    isEnabled: boolean
+    isEnabled: boolean,
+    organizationId: string
 }

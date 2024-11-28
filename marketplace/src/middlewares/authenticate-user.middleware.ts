@@ -47,7 +47,8 @@ const authenticateUser = async (req: Request, res: Response, next: NextFunction)
                 email: user.email,
                 type: user.type,
                 name: getUserName(user),
-                isEnabled: user.isEnabled
+                isEnabled: user.isEnabled,
+                organizationId: user.organizationId ?? ""
             }
 
             next();

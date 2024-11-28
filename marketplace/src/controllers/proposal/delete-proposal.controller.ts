@@ -22,7 +22,7 @@ export const deleteProposal = asyncHandler(async (req: Request, res: Response) =
 
     // Fetch proposal, if not found then throw an error
     const proposal = await Proposal.findById(proposalId);
-    if (!proposal || String(proposal.jobId) !== jobId) {
+    if (!proposal || String(proposal.jobId) !== jobId || String(proposal.organizationId) !== String(req.currentUser.organizationId)) {
         throw new ApiError(404, "Proposal not found.");
     }
 

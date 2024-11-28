@@ -1,13 +1,13 @@
 "use client";
 
-import JobsListing from "./jobs-listing";
+import JobsListingClient from "./jobs-listing-client";
 import JobsListingDraft from "./jobs-listing-draft";
 
-const JobsListingPage = () => {
+const JobsListingClientPage = () => {
     return (
         // <JobsListing />
-        <JobsListingDraft />
+        <JobsListingClient />
     )
 };
 
-export default JobsListingPage
+export default JobsListingClientPage

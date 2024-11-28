@@ -84,6 +84,30 @@ export class APIStore {
         });
     }
 
+    static getOrganizationDetails = async (messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/users/organizations`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        });
+    }
+
+    static getOrganizationMembers = async (messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/users/organizations/members`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        });
+    }
+
+    static inviteOrganizationMember = async (email: string,messageSettings?: NotificationMessageSettings) => {
+        return await http.put({
+            url: `/api/v1/users/organizations/members/invite`,
+            data: {
+                email
+            },
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        });
+    }
+
     // Marketplace
     static getSevices = async (queryParams: string, messageSettings?: NotificationMessageSettings) => {
         return await http.get({
@@ -112,8 +136,57 @@ export class APIStore {
         })
     }
 
-    static getJobPostDetails = async (jobId: string, messageSettings?: NotificationMessageSettings) => {
+    static getMostRecentJobsForServiceProvider = async (search: string | null, messageSettings?: NotificationMessageSettings) => {
         return await http.get({
+            url: `/api/v1/marketplace/jobs/serviceProvider${search ? `?search=${search}` : ""}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static getWishlistedJobsForServiceProvider = async (search: string | null, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/serviceProvider/wishlist${search ? `?search=${search}` : ""}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static getActiveJobsForClient = async (search: string | null, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/client${search ? `?search=${search}` : ""}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static getDraftJobsForClient = async (search: string | null, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/client/draft${search ? `?search=${search}` : ""}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static getCompletedJobsForClient = async (search: string | null, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/client/completed${search ? `?search=${search}` : ""}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static getJobPostDetailsForServiceProvider = async (jobId: string, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/${jobId}/serviceProvider`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static getJobPostDetailsForClient = async (jobId: string, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/${jobId}/client`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static deleteJobPost = async (jobId: string, messageSettings?: NotificationMessageSettings) => {
+        return await http.delete({
             url: `/api/v1/marketplace/jobs/${jobId}`,
             messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
         })

@@ -71,7 +71,7 @@ const PasswordRecoveryForm: React.FC<IPasswordRecoveryFormProps> = ({ token }) =
 
     return (
         <div className="flex items-center justify-center h-screen">
-            <div className="w-[600px] h-[400px] flex flex-col items-center justify-start">
+            <div className="w-[600px] h-[400px] flex flex-col items-center justify-start bg-white">
                 {/* <!-- Logo --> */}
                 {/* <div className="flex justify-start w-full mb-10">
                     <img src="https://placehold.co/100x40" alt="Upwork Logo" className="ml-6 w-24 h-10" />

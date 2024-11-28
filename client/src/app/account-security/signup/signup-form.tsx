@@ -147,7 +147,7 @@ export const SignupForm: React.FC<ISignupFormProps> = ({ invitationToken, organi
 
     return (
         <div className="flex justify-center items-center min-h-7">
-            <div className="w-[400px] p-8 border border-gray-300 rounded-lg shadow-lg">
+            <div className="w-[400px] p-8 border border-gray-300 rounded-lg shadow-lg bg-white">
                 {/* <!-- Logo --> */}
                 {/* <div className="flex justify-center mb-8"> */}
                 {/* <Image
