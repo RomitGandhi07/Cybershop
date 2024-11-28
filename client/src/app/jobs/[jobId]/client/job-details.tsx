@@ -10,41 +10,20 @@ import { FaMoneyCheckDollar } from "react-icons/fa6";
 
 const JobDetails: React.FC<{}> = () => {
     const [job, setJob] = useState<Record<string, any>>({});
-    const [client, setClient] = useState<Record<string, any>>({});
-    const [user, setUser] = useState<Record<string, any>>({
-        wishlist: false,
-        proposal: false
-    });
     const [loading, setLoading] = useState(true);
     const { jobId } = useParams();
 
 
     const fetchJobPostDetails = async (): Promise<void> => {
         setLoading(true);
-        const response = await APIStore.getJobPostDetails(jobId as string, {
+        const response = await APIStore.getJobPostDetailsForClient(jobId as string, {
             hideSuccessMessage: true
         });
         if (response && response.success) {
             setJob((response as ApiSuccessResponse).data.job);
-            setClient((response as ApiSuccessResponse).data.client);
-            setUser((response as ApiSuccessResponse).data.user);
         }
         setLoading(false);
     };
-
-    const wishListJob = async (): Promise<void> => {
-        const response = await APIStore.wishlistJobPost(jobId as string, {
-            action: user.wishlist ? "remove" : "add"
-        }, {
-            hideSuccessMessage: true
-        });
-        if (response && response.success) {
-            setUser({
-                ...user,
-                wishlist: !user.wishlist
-            })
-        }
-    }
 
     useEffect(() => {
         if (jobId) {
@@ -54,16 +33,16 @@ const JobDetails: React.FC<{}> = () => {
 
     return (
         loading ? <p>Loading...</p> :
-            <div className="w-full mx-auto bg-white p-8 rounded shadow-md flex">
+            <div className="w-full mx-auto bg-white p-8 mt-5 flex">
                 {/* <!-- Left Column --> */}
                 <div className="w-full pr-8">
                     {/* <!-- Job Title --> */}
                     <div className="mb-4">
                         <div className="flex justify-between items-center">
-                            <h1 className="text-2xl font-bold text-gray-900 mb-2">{job.title}</h1>
+                            <h1 className="w-[85%] text-2xl font-bold text-gray-900 mb-2">{job.title}</h1>
                             <PrimaryButton
                                 isLoader={false}
-                                className="w-1/5"
+                                className="w-[15%]"
                             >
                                 View All Proposals
                             </PrimaryButton>
@@ -123,7 +102,7 @@ const JobDetails: React.FC<{}> = () => {
                             <div className="flex items-center">
                                 <FaFileContract className="text-orange-600" size={25} />
                                 <div className="flex flex-col ml-1">
-                                    <span className="text-gray-900 font-semibold ml-2">{job.proposals || 8}</span>
+                                    <span className="text-gray-900 font-semibold ml-2">{job.proposals ?? 0}</span>
                                     <span className="text-gray-600 text-sm ml-2">Proposals</span>
                                 </div>
                             </div>

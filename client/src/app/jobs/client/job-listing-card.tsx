@@ -1,6 +1,7 @@
 "use client";
-import { FaCross, FaMapMarkerAlt } from "react-icons/fa";
-import { FaHeart, FaPencil, FaXmark } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaPencil, FaXmark } from "react-icons/fa6";
 
 interface IJobDetails {
     id: string,
@@ -10,10 +11,7 @@ interface IJobDetails {
         id: string,
         value: string
     }[],
-    country: {
-        id: string,
-        value: string
-    },
+    // country: string,
     budget: {
         type: string,
         fixedFee?: number | null
@@ -29,35 +27,53 @@ interface IJobDetails {
     wishlisted: boolean,
 }
 interface IJobListingCardProps {
-    job: IJobDetails
+    job: IJobDetails,
+    displayEditButton?: boolean
+    displayDeleteButton?: boolean
 }
 
 
-const JobListingCard: React.FC<IJobListingCardProps> = ({ job }) => {
+const JobListingCard: React.FC<IJobListingCardProps> = ({ job, displayEditButton = true, displayDeleteButton = true }) => {
+    const router = useRouter();
+    async function cancelJobPost() {
+        // TODO: need logic of cancel job post
+    }
+
     return (
         <>
             <div className="bg-white border border-gray-200 rounded-lg p-6 mb-4">
                 <div className="flex justify-between items-center mb-2">
                     <p className="text-gray-500 text-xs mb-2">Posted at {new Date(job.publishedAt).toString()}</p>
-                    <FaPencil
-                        size={15}
-                    // className="text-orange-600"
-                    // onClick={handleWishlistToggle}
-                    // className={`cursor-pointer transition-colors ${job.wishlisted ? "text-red-500" : "text-gray-400"
-                    //     }`
-                    // }
-                    />
+                    {
+                        displayEditButton && <FaPencil
+                            size={15}
+                            title="Edit"
+                            className="cursor-pointer"
+                            onClick={() => {
+                                router.push(`/jobs/${job.id}/edit`);
+                            }}
+                        // className={`cursor-pointer transition-colors ${job.wishlisted ? "text-red-500" : "text-gray-400"
+                        //     }`
+                        // }
+                        />
+                    }
+
                 </div>
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-orange-600 font-semibold text-lg mb-2">{job.title}</span>
-                    <FaXmark
-                        size={20}
-                        className="text-red-600"
-                    // onClick={handleWishlistToggle}
-                    // className={`cursor-pointer transition-colors ${job.wishlisted ? "text-red-500" : "text-gray-400"
-                    //     }`
-                    // }
-                    />
+                    {
+                        displayDeleteButton && <FaXmark
+                            size={20}
+                            title="Cancel"
+                            className="text-red-600 cursor-pointer"
+                            onClick={cancelJobPost}
+                        // onClick={handleWishlistToggle}
+                        // className={`cursor-pointer transition-colors ${job.wishlisted ? "text-red-500" : "text-gray-400"
+                        //     }`
+                        // }
+                        />
+                    }
+
                 </div>
                 <p className="text-gray-500 text-sm mb-4">{job.budget.type} - {job.expertise} - Est. Time: {job.duration} - Est. Budget: {job.budget.fixedFee ? `$${job.budget.fixedFee}` : `$${job.budget.hourlyRate?.from} - $${job.budget.hourlyRate?.to}`}</p>
                 <p className="text-gray-700 text-sm mb-3">{job.description}
@@ -75,32 +91,14 @@ const JobListingCard: React.FC<IJobListingCardProps> = ({ job }) => {
                     }
                 </div>
 
-                {/* <!-- Job Details --> */}
-                <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    {/* <div className="flex items-center space-x-1">
-                        <i className="fas fa-shield-alt text-gray-400"></i>
-                        <span>Payment verified</span>
-                    </div> */}
-                    {/* <div className="flex items-center space-x-1 text-yellow-500">
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star-half-alt"></i>
-                    </div>
-                    <span className="text-gray-700">$900+ spent</span> */}
-                    <div className="flex items-center space-x-1">
-                        <FaMapMarkerAlt className="text-gray-400"></FaMapMarkerAlt>
-                        <span>{job.country.value}</span>
-                    </div>
-                </div>
-                <p className="text-gray-500 text-sm mt-4">Proposals: {job.proposals}</p>
-                {/* <!-- Actions --> */}
-                {/* <div className="absolute top-4 right-4 flex space-x-3 text-gray-400"> */}
-                {/* <i className="fas fa-thumbs-down hover:text-gray-600 cursor-pointer">L</i>
-                    <i className="fas fa-heart "></i> */}
-                {/* <FaHeart className="hover:text-gray-600 cursor-pointer"></FaHeart> */}
-                {/* </div> */}
+                {
+                    job.hasOwnProperty("proposals") &&
+                        job.proposals ? <p className="text-orange-600 text-sm mt-4 cursor-pointer" onClick={() => {
+                            router.push(`/jobs/${job.id}/proposals`)
+                        }}>Proposals: {job.proposals}</p> : <p className="text-orange-600 text-sm mt-4">Proposals: {job.proposals}</p>
+                    // <a href="#" className="text-orange-600 text-sm mt-4">Proposals: {job.proposals}</a>
+
+                }
             </div>
         </>
     )

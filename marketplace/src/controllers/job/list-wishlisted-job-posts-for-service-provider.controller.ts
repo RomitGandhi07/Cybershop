@@ -4,8 +4,9 @@ import { ApiError } from "../../utils/ApiError";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { escapeRegExp } from "../../utils";
 import { JobsWhishlist } from "../../models/jobs-whishlist";
+import mongoose from "mongoose";
 
-export const listWishlistedJobPosts = asyncHandler(async (req: Request, res: Response) => {
+export const listWishlistedJobPostsForServiceProvider = asyncHandler(async (req: Request, res: Response) => {
     // If current user not found then throw internal server error
     if (!req.currentUser) {
         throw new ApiError(500, "Something went wrong");
@@ -14,8 +15,8 @@ export const listWishlistedJobPosts = asyncHandler(async (req: Request, res: Res
     const { search } = req.query;
 
     // If search is passed then perapre search query
-    const searchQuery: { "title"?: { $regex: string, $options: string }, userId: string } = {
-        userId: req.currentUser.id
+    const searchQuery: { "title"?: { $regex: string, $options: string }, userId: any } = {
+        userId: new mongoose.mongo.ObjectId(req.currentUser.id)
     };
     if (search) {
         searchQuery["title"] = { $regex: `${escapeRegExp(search as string)}`, $options: "i" };

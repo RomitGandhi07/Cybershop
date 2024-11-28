@@ -50,11 +50,12 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     req.currentUser = {
-        id: "66e6d47d026901b3dfbd67d9",
+        id: "6741888018d180d3daf61f8b",
         name: "Romit Gandhi",
         isEnabled: true,
         email: "gandhiromit77@gmail.com",
-        type: UserTypesEnum.CLIENT
+        type: UserTypesEnum.CLIENT,
+        organizationId: "6741888418d180d3daf61f8d"
     }
     next();
 })

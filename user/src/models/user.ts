@@ -14,6 +14,7 @@ interface UserAttrs {
     type: UserTypesEnum,
     emailVerificationToken: string,
     emailVerificationExpiry: number,
+    organizationId?: string | null
 }
 
 // An interface that describes the properties that User Document has
@@ -31,6 +32,7 @@ interface UserDoc extends mongoose.Document {
     emailVerificationToken: string | null,
     emailVerificationExpiry: number | null,
     refreshToken: string | null,
+    organizationId: string | null,
     isEnabled: boolean,
     createdAt: string,
     updatedAt: string,
@@ -91,6 +93,11 @@ const userSchema = new mongoose.Schema(
         },
         refreshToken: {
             type: String,
+            default: null
+        },
+        organizationId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Organization",
             default: null
         },
         isEnabled: {

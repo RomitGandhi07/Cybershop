@@ -23,16 +23,16 @@ export const creteProposal = asyncHandler(async (req: Request, res: Response) =>
 
     // If the job status is not active then throw an error as can send proposal in active jobs only
     if (job.status !== JobStatusEnum.ACTIVE) {
-        throw new ApiError(409, "You have already applied for this job.");
+        throw new ApiError(409, "Job is not active.");
     }
 
     // Check whether user already sent proposal for the job or not, if yes then throw an error
     const alreadyApplied = await Proposal.findOne({
-        userId: req.currentUser.id,
+        organizationId: req.currentUser.organizationId,
         jobId
     });
     if (alreadyApplied) {
-        throw new ApiError(409, "You have already applied for this job.");
+        throw new ApiError(409, "Your organization already applied for this job.");
     }
 
     //
@@ -45,6 +45,7 @@ export const creteProposal = asyncHandler(async (req: Request, res: Response) =>
 
     // Create new proposal
     const proposal = await Proposal.build({
+        organizationId: req.currentUser.organizationId,
         userId: req.currentUser.id,
         jobId,
         ...proposalDetails

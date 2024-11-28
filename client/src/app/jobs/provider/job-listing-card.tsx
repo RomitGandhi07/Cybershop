@@ -1,4 +1,6 @@
 "use client";
+import { APIStore } from "@/utils/api-store";
+import { useState } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 
@@ -10,10 +12,7 @@ interface IJobDetails {
         id: string,
         value: string
     }[],
-    country: {
-        id: string,
-        value: string
-    },
+    country: string,
     budget: {
         type: string,
         fixedFee?: number | null
@@ -29,11 +28,28 @@ interface IJobDetails {
     wishlisted: boolean,
 }
 interface IJobListingCardProps {
-    job: IJobDetails
+    job: IJobDetails,
+    setRefreshPage?: (val: boolean) => void
 }
 
 
-const JobListingCard: React.FC<IJobListingCardProps> = ({ job }) => {
+const JobListingCard: React.FC<IJobListingCardProps> = ({ job, setRefreshPage }) => {
+    const [wishlisted, setWishlisted] = useState(job.wishlisted);
+    async function handleWishlistToggle() {
+        const response = await APIStore.wishlistJobPost(job.id, {
+            action: wishlisted ? "remove" : "add"
+        }, {
+            hideSuccessMessage: true
+        });
+        if (response && response.success) {
+            setWishlisted(!wishlisted);
+
+            if (setRefreshPage) {
+                setRefreshPage(true);
+            }
+        }
+    }
+
     return (
         <>
             <div className="bg-white border border-gray-200 rounded-lg p-6 mb-4">
@@ -42,8 +58,9 @@ const JobListingCard: React.FC<IJobListingCardProps> = ({ job }) => {
                     <span className="text-orange-600 font-semibold text-lg mb-2">{job.title}</span>
                     <FaHeart
                         size={25}
-                        // onClick={handleWishlistToggle}
-                        className={`cursor-pointer transition-colors ${job.wishlisted ? "text-red-500" : "text-gray-400"
+                        title="Wishlist"
+                        onClick={handleWishlistToggle}
+                        className={`cursor-pointer transition-colors ${wishlisted ? "text-red-500" : "text-gray-400"
                             }`}
                     />
                 </div>
@@ -65,30 +82,12 @@ const JobListingCard: React.FC<IJobListingCardProps> = ({ job }) => {
 
                 {/* <!-- Job Details --> */}
                 <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    {/* <div className="flex items-center space-x-1">
-                        <i className="fas fa-shield-alt text-gray-400"></i>
-                        <span>Payment verified</span>
-                    </div> */}
-                    {/* <div className="flex items-center space-x-1 text-yellow-500">
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star"></i>
-                        <i className="fas fa-star-half-alt"></i>
-                    </div>
-                    <span className="text-gray-700">$900+ spent</span> */}
                     <div className="flex items-center space-x-1">
                         <FaMapMarkerAlt className="text-gray-400"></FaMapMarkerAlt>
-                        <span>{job.country.value}</span>
+                        <span>{job.country}</span>
                     </div>
                 </div>
                 <p className="text-gray-500 text-sm mt-4">Proposals: {job.proposals}</p>
-                {/* <!-- Actions --> */}
-                {/* <div className="absolute top-4 right-4 flex space-x-3 text-gray-400"> */}
-                {/* <i className="fas fa-thumbs-down hover:text-gray-600 cursor-pointer">L</i>
-                    <i className="fas fa-heart "></i> */}
-                {/* <FaHeart className="hover:text-gray-600 cursor-pointer"></FaHeart> */}
-                {/* </div> */}
             </div>
         </>
     )

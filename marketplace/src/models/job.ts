@@ -19,6 +19,7 @@ interface IJobBudget {
 
 // An interface that describes the properties that are required to create a new Job
 interface JobAttr {
+    organizationId: string,
     title: string,
     createdBy: ReferenceValue
 }
@@ -26,6 +27,7 @@ interface JobAttr {
 // An interface that describes the properties that a Job Document has
 interface JobDoc extends mongoose.Document {
     id: string,
+    organizationId: string,
     title: string,
     services: ReferenceValue[] | null,
     complexity: JobComplexityEnum | null,
@@ -50,6 +52,11 @@ interface JobModel extends mongoose.Model<JobDoc> {
 
 const jobSchema = new mongoose.Schema(
     {
+        organizationId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Organization",
+            required: true
+        },
         title: {
             type: String,
             required: true

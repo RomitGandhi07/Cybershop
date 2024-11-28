@@ -1,15 +1,14 @@
+import { ApiSuccessResponse } from "@/interfaces";
 import Description from "@/shared/components/description";
-import { useState } from "react"
+import { APIStore } from "@/utils/api-store";
+import { useEffect, useState } from "react"
 import { FaPencil } from "react-icons/fa6";
 
-export default function OrganizationDetails() {
-    const [data, setData] = useState<Record<string, any>>({
-        website: `www.crowdstrike.com`,
-        industry: "Cyber Security",
-        noOfEmployees: 500,
-        tagline: "We Stop Breaches!",
-        description: "CrowdStrike is an American cybersecurity technology company based in Austin, Texas. It provides endpoint security, threat intelligence, and cyberattack response services. Until July 2024 it was best known for deploying immediate updates upon detecting threats, distributing as many as 10-12 per day. Since then it has been offering phased or staggered update rollout.",
-    });
+interface IOrganizationDetails {
+    data: Record<string, any>
+}
+
+const OrganizationDetails: React.FC<IOrganizationDetails> = ({ data }) => {
 
     const fieldToTitleMapping: Record<string, string> = {
         website: "Website",
@@ -34,24 +33,15 @@ export default function OrganizationDetails() {
                         // }
                         />
                     </div>
-                    {/* <div className="absolute top-4 right-4">
-                        <button className="text-green-600 bg-gray-100 rounded-full p-2">
-                            <i className="fas fa-pen"></i>
-                        </button>
-                    </div> */}
                     {
                         Object.keys(fieldToTitleMapping ?? {}).map(record => {
                             return <Description key={record} title={fieldToTitleMapping[record]} description={data[record]}></Description>
                         })
                     }
-                    {/* <p className="text-gray-600">User ID</p>
-                    <p className="mb-4">romitgandhi</p>
-                    <p className="text-gray-600">Name</p>
-                    <p className="mb-4">Romit Gandhi</p>
-                    <p className="text-gray-600">Email</p>
-                    <p className="mb-4">g******77@gmail.com</p> */}
                 </div>
             </div>
         </div>
     )
 }
+
+export default OrganizationDetails;
