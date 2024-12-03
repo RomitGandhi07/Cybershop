@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: user-depl
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: user
+ template:
+   metadata:
+     labels:
+       app: user
+   spec:
+     containers:
+       - name: user
+         image: cybershop/user:development
+         imagePullPolicy: "Always"
+         securityContext:
+           allowPrivilegeEscalation: false
+         resources:
+           limits:
+             cpu: 500m
+             memory: 512Mi
+         volumeMounts:
+           - mountPath: /tmp
+             name: tmp
+         env:
+           - name: TMPDIR
+             value: /tmp
+           - name: MONGO_URI
+             valueFrom:
+               secretKeyRef:
+                 name: mongo-uri-secret
+                 key: MONGO_URI
+           - name: JWT_SECRET
+             valueFrom:
+               secretKeyRef:
+                 name: jwt-secret
+                 key: JWT_SECRET
+           - name: COOKIE_SECRET
+             valueFrom:
+               secretKeyRef:
+                 name: cookie-secret-secret
+                 key: COOKIE_SECRET
+           - name: DOMAIN_URL
+             value: https://phoenix.local
+           - name: LOCAL_ENVIRONMENT
+             value: "true"
+     imagePullSecrets:
+       - name: docker-regcred
+     volumes:
+       - emptyDir: {}
+         name: tmp
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: user-srv
+spec:
+ selector:
+   app: user
+ ports:
+   - name: user
+     protocol: TCP
+     port: 3001
+     targetPort: 3001

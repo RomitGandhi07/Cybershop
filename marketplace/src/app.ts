@@ -62,7 +62,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use("/api/v1/marketplace/services", SeviceRouter);
 app.use("/api/v1/marketplace/jobs", JobRouter);
-app.use("/api/v1/marketplace/jobs/:jobId/proposals", ProposalRouter);
+// app.use("/api/v1/marketplace/jobs/:jobId/proposals", ProposalRouter);
 
 app.use(errorHandler);
 

@@ -4,6 +4,7 @@ import { Job } from "../../models/job";
 import { ApiError } from "../../utils/ApiError";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { Proposal } from "../../models/proposal";
+import { Organization } from "../../models/organization";
 
 export const getProposalDetails = asyncHandler(async (req: Request, res: Response) => {
     // If current user not found then throw internal server error
@@ -25,11 +26,24 @@ export const getProposalDetails = asyncHandler(async (req: Request, res: Respons
         throw new ApiError(404, "Proposal not found.");
     }
 
+    // Fetch client and service provider organization
+    const clientOrganization = await Organization.findById(job.organizationId, { name: 1, logo: 1 });
+    if(!clientOrganization) {
+        throw new ApiError(500, "Something went wrong");
+    }
+
+    const serviceProviderOrganization = await Organization.findById(proposal.organizationId, { name: 1, logo: 1 });
+    if(!serviceProviderOrganization) {
+        throw new ApiError(500, "Something went wrong");
+    }
+
     // Send response
     return res
         .json(new ApiResponse(200, {
             ...proposal,
             id: String(proposal._id),
             _id: undefined,
+            clientOrganization,
+            serviceProviderOrganization
         }));
 });

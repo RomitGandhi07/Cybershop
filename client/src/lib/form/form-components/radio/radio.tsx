@@ -35,12 +35,13 @@ export default function Radio({ name, options, onChange, ...props }) {
     control,
     formState: { errors },
   }: any = useFormContext(); // retrieve all hook methods
+
   const elementProps = {
     name: name,
     ...props,
-    onChange: (event: any) => (onChange ? onChange(event.target.value) : null),
     className: `form-control ${errors?.[name] ? 'is-invalid' : ''}`,
   };
+  
   return (
     <>
       {console.info("IN the radio")}
@@ -62,10 +63,15 @@ export default function Radio({ name, options, onChange, ...props }) {
                   value={option.value}
                   checked={value === option.value}
                   onChange={(e) => {
-                    onChangeValue(e.target.value);
-                    // if (onChange) {
-                    //   onChange(e.target.value);
-                    // }
+                    const newValue = event.target.value;
+
+                    // Update react-hook-form's internal value
+                    onChangeValue(newValue);
+
+                    // Invoke original onChange method
+                    if (onChange) {
+                      onChange({ [name]: newValue });
+                    }
                   }}
                   className="h-7 w-7 text-orange-500 border-gray-300 focus:ring-orange-500"
                 />

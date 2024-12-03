@@ -13,6 +13,11 @@ import { listActiveJobPostsForClient } from "../controllers/job/list-active-job-
 import { listDraftJobPostsForClient } from "../controllers/job/list-draft-job-posts-for-client.controller";
 import { listCompletedJobPostsForClient } from "../controllers/job/list-completed-job-posts-for-client.controller";
 import { deleteJobPost } from "../controllers/job/delete-job-post.controller";
+import { createJobProposal } from "../controllers/proposal/create-proposal.controller";
+import { listProposal } from "../controllers/proposal/list-proposal.controller";
+import { getProposalDetails } from "../controllers/proposal/get-proposal-details.controller";
+import { deleteProposal } from "../controllers/proposal/delete-proposal.controller";
+import { updateProposalStatus } from "../controllers/proposal/update-proposal-status.controller";
 
 
 const router = express.Router();
@@ -67,6 +72,26 @@ router.route("/:jobId/publish").put(
 
 router.route("/:jobId/wishlist").put(
     wishlistJobPost
+);
+
+router.route("/:jobId/proposals").post(
+    createJobProposal
+)
+
+router.route("/:jobId/proposals").get(
+    listProposal
+);
+
+router.route("/:jobId/proposals/:proposalId").get(
+    getProposalDetails
+);
+
+router.route("/:jobId/proposals/:proposalId").delete(
+    deleteProposal
+);
+
+router.route("/:jobId/proposals/:proposalId/status").put(
+    updateProposalStatus
 );
 
 export default router;

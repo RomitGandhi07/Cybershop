@@ -60,7 +60,7 @@ const JobListingCard: React.FC<IJobListingCardProps> = ({ job, displayEditButton
 
                 </div>
                 <div className="flex justify-between items-center mb-2">
-                    <span className="text-orange-600 font-semibold text-lg mb-2">{job.title}</span>
+                    <a href={`/jobs/${job.id}/client`} target="_blank" className="text-orange-600 font-semibold text-lg mb-2">{job.title}</a>
                     {
                         displayDeleteButton && <FaXmark
                             size={20}

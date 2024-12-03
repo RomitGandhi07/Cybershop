@@ -7,14 +7,16 @@ import { Proposal } from "../../models/proposal";
 import { JobStatusEnum } from "../../enums/job-status.enum";
 import { pickFromObject } from "../../utils";
 
-export const creteProposal = asyncHandler(async (req: Request, res: Response) => {
+export const createJobProposal = asyncHandler(async (req: Request, res: Response) => {
     // If current user not found then throw internal server error
     if (!req.currentUser) {
         throw new ApiError(500, "Something went wrong");
     }
 
     // Fetch job, if not found then throw an error
+    console.info("Params", req.params);
     const { jobId } = req.params;
+    console.info("JobId", jobId);
 
     const job = await Job.findById(jobId).lean().exec();
     if (!job) {

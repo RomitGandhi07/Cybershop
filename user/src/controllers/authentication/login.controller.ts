@@ -51,7 +51,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
         // Send response
         return res
-            .json(new ApiResponse(200, {}, "User Successfully Logged in"));
+            .json(new ApiResponse(200, {id: user.id, type: user.type}, "User Successfully Logged in"));
     }
     else {
         // If email verification expiry is not found then throw an error

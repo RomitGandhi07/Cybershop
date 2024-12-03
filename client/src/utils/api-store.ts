@@ -98,7 +98,7 @@ export class APIStore {
         });
     }
 
-    static inviteOrganizationMember = async (email: string,messageSettings?: NotificationMessageSettings) => {
+    static inviteOrganizationMember = async (email: string, messageSettings?: NotificationMessageSettings) => {
         return await http.put({
             url: `/api/v1/users/organizations/members/invite`,
             data: {
@@ -116,7 +116,7 @@ export class APIStore {
         })
     }
 
-    static createJobPost = async (data: Record<string, string>, messageSettings?: NotificationMessageSettings) => {
+    static createJobPost = async (data: Record<string, any>, messageSettings?: NotificationMessageSettings) => {
         return await http.post({
             url: `/api/v1/marketplace/jobs`,
             data,
@@ -201,6 +201,36 @@ export class APIStore {
             url: `/api/v1/marketplace/jobs/${jobId}/wishlist`,
             data,
             messageSettings: messageSettings ?? defaultMessageSettings
+        })
+    }
+
+    static createJobPostProposal = async (jobId: string, data: Record<string, any>, messageSettings?: NotificationMessageSettings) => {
+        return await http.post({
+            url: `/api/v1/marketplace/jobs/${jobId}/proposals`,
+            data,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static getJobProposals = async (jobId: string, status = "", messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/${jobId}/proposals${status ? `?status=${status}` : ""}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static updateProposalStatus = async (params: { jobId: string, proposalId: string }, data: { status: string }, messageSettings?: NotificationMessageSettings) => {
+        return await http.put({
+            url: `/api/v1/marketplace/jobs/${params.jobId}/proposals/${params.proposalId}/status`,
+            data,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
+        })
+    }
+
+    static getJobProposalDetails = async (jobId: string, proposalId: string, messageSettings?: NotificationMessageSettings) => {
+        return await http.get({
+            url: `/api/v1/marketplace/jobs/${jobId}/proposals/${proposalId}`,
+            messageSettings: messageSettings ?? APIStore.DEFAULT_MESSAGE_SETTINGS
         })
     }
 }

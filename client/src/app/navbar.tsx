@@ -8,7 +8,7 @@ const Navbar = () => {
             <div className="flex items-center space-x-6">
                 {/* <!-- Logo --> */}
                 <a href="#" className="text-black text-lg font-bold">
-                    <img src="./logo.png" alt="Profile" className="w-13 h-14 rounded-full border border-gray-300" />
+                    <img src="https://ucarecdn.com/bef3d92a-9985-417b-a973-9e29c06383e1/logo.png" alt="Profile" className="w-13 h-14 rounded-full border border-gray-300" />
 
                 </a>
 

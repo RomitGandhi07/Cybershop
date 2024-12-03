@@ -53,7 +53,16 @@ export default function LoginForm() {
             // Call API and if we get success response then redirect user to homepage
             const response = await APIStore.loginUser(data);
             if (response.success) {
-                router.push("/");
+                const type = (response as any).data.type;
+                if(type === "Client") {
+                    router.push("/jobs/client");
+                }
+                else if (type === "Service Provider") {
+                    router.push("/jobs/provider");
+                }
+                else {
+                    router.push("/");
+                }
             }
 
         }

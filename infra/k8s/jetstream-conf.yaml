@@ -1,0 +1,12 @@
+apiVersion: jetstream.nats.io/v1beta2
+kind: Stream
+metadata:
+  name: cybershopstream
+  namespace: default
+spec:
+  name: cybershop
+  subjects: ["cybershop.*"]
+  storage: file
+  replicas: 2
+  servers: ["nats-srv-1:4222", "nats-srv-2:4222", "nats-srv-3:4222"]
+  maxAge: 5h

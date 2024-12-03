@@ -1,29 +1,51 @@
-# apiVersion: skaffold/v2alpha3
-# kind: Config
-# deploy:
-#   kubectl:
-#     manifests:
-#       - ./infra/k8s-local/*
-# build:
-#   local:
-#     push: false
-#   tagPolicy:
-#     envTemplate:
-#       template: "{{.NODE_ENV}}"
-#   artifacts:
-#     - image: moxfive/authentication
-#       context: authentication
-#       docker:
-#         dockerfile: Dockerfile_local
-#         buildArgs:
-#           GITHUB_TOKEN: "{{.GITHUB_TOKEN}}"
-#       sync:
-#         infer:
-#           - "**/*.ts"
-# profiles:
-#   - name: local
-# #      - op: replace
-# #        path: /build/artifacts/3/docker/dockerfile
-# #        value: Dockerfile_local
-#     activation:
-#       - env: NODE_ENV=local
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+      - ./infra/k8s-local/*
+build:
+  local:
+    push: false
+  tagPolicy:
+    envTemplate:
+      template: "{{.NODE_ENV}}"
+  artifacts:
+    - image: cybershop/user
+      context: user
+      docker:
+        dockerfile: Dockerfile_local
+        # buildArgs:
+        #   GITHUB_TOKEN: "{{.GITHUB_TOKEN}}"
+      sync:
+        infer:
+          - "**/*.ts"
+    - image: cybershop/marketplace
+      context: marketplace
+      docker:
+        dockerfile: Dockerfile_local
+        # buildArgs:
+        #   GITHUB_TOKEN: "{{.GITHUB_TOKEN}}"
+      sync:
+        infer:
+          - "**/*.ts"
+    - image: cybershop/client
+      context: client
+      docker:
+        dockerfile: Dockerfile_local
+        # buildArgs:
+        #   GITHUB_TOKEN: "{{.GITHUB_TOKEN}}"
+      sync:
+        infer:
+          - "**/*.ts"
+          - "**/*.tsx"
+          - "**/*.css"
+          - "**/*.scss"
+profiles:
+  - name: local
+#      - op: replace
+#        path: /build/artifacts/3/docker/dockerfile
+#        value: Dockerfile_local
+    activation:
+      - env: NODE_ENV=local

@@ -40,12 +40,11 @@ const JobDetails: React.FC<{}> = () => {
                     <div className="mb-4">
                         <div className="flex justify-between items-center">
                             <h1 className="w-[85%] text-2xl font-bold text-gray-900 mb-2">{job.title}</h1>
-                            <PrimaryButton
-                                isLoader={false}
-                                className="w-[15%]"
+                            <button
+                                className="w-1/12 bg-orange-600 text-white rounded-3xl p-3 text-sm font-medium hover:bg-orange-700 transition duration-200"
                             >
-                                View All Proposals
-                            </PrimaryButton>
+                                View Proposals
+                            </button>
                         </div>
                         <p className="text-gray-600 mb-1">Posted at {new Date(job.publishedAt).toString()}</p>
                     </div>

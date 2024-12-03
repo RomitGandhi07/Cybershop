@@ -47,7 +47,7 @@ const Chat: React.FC<{}> = () => {
                                 <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-xl font-semibold">VT</div>
                                 <div>
                                     <h2 className="text-lg font-medium">Vaibhav Talati</h2>
-                                    <p className="text-sm text-gray-500"><i className="far fa-clock mr-1"></i> Australia, Monday 26 August 2024 at 20:00:00 GMT+11</p>
+                                    <p className="text-sm text-gray-500"><i className="far fa-clock mr-1"></i> Australia, Monday 14 October 2024 at 20:00:00 GMT+11</p>
                                 </div>
                             </div>
                             {/* <button className="flex items-center space-x-2 bg-orange-500 text-white px-4 py-2 rounded-lg shadow">
@@ -59,7 +59,7 @@ const Chat: React.FC<{}> = () => {
                         {/* <!-- Chat Messages --> */}
                         <div className="flex-1 overflow-y-auto space-y-4">
                             {/* <!-- Date --> */}
-                            <div className="text-md text-gray-500 text-center">Saturday, Aug 24</div>
+                            <div className="text-md text-gray-500 text-center">Saturday, Oct 12</div>
                             <div className="flex items-start space-x-3">
                                 <div className="w-10 h-10 rounded-full overflow-hidden">
                                 <div className="w-13 h-10 bg-gray-300 rounded-full flex items-center justify-center text-xl">RG</div>
@@ -83,7 +83,7 @@ const Chat: React.FC<{}> = () => {
 
                         <div className="flex-1 overflow-y-auto space-y-4">
                             {/* <!-- Date --> */}
-                            <div className="text-md text-gray-500 text-center">Sunday, Aug 25</div>
+                            <div className="text-md text-gray-500 text-center">Sunday, Oct 13</div>
                             <div className="flex items-start space-x-3">
                                 <div className="w-10 h-10 rounded-full overflow-hidden">
                                     <div className="w-13 h-10 bg-gray-300 rounded-full flex items-center justify-center text-xl">RG</div>

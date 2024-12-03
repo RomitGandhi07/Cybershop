@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nats-depl-1
+  namespace: default
+spec:
+  serviceName: nats-1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats-1
+  template:
+    metadata:
+      labels:
+        app: nats-1
+    spec:
+      containers:
+        - name: nats
+          image: nats
+          args: ["-n", "natsA", "-js", "-m", "8222", "-sd", "/var/lib/nats", "--cluster_name=phoenix-dev", "--cluster=nats://0.0.0.0:7222", "--routes=nats-route://nats-srv-2:7222,nats-route://nats-srv-3:7222"]
+          volumeMounts:
+          - name: data
+            mountPath: /var/lib/nats
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: nats-pv-claim-1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats-srv-1
+spec:
+  selector:
+    app: nats-1
+  ports:
+    - name: client
+      protocol: TCP
+      port: 4222
+      targetPort: 4222
+    - name: routing
+      protocol: TCP
+      port: 7222
+      targetPort: 7222
+    - name: monitoring
+      protocol: TCP
+      port: 8222
+      targetPort: 8222

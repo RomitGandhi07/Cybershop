@@ -55,7 +55,7 @@ const JobListingCard: React.FC<IJobListingCardProps> = ({ job, setRefreshPage })
             <div className="bg-white border border-gray-200 rounded-lg p-6 mb-4">
                 <p className="text-gray-500 text-xs mb-2">Posted at {new Date(job.publishedAt).toString()}</p>
                 <div className="flex justify-between items-center mb-2">
-                    <span className="text-orange-600 font-semibold text-lg mb-2">{job.title}</span>
+                <a href={`/jobs/${job.id}/provider`} target="_blank" className="text-orange-600 font-semibold text-lg mb-2">{job.title}</a>
                     <FaHeart
                         size={25}
                         title="Wishlist"
